@@ -897,6 +897,9 @@ func (this *Neo4j) UnmarshalQerySet(body string) (ResultSet, error) {
 	return bodyData, err
 }
 
+/*
+ * GetRelationTypes() 获取关系类型
+ */
 func (this *Neo4j) GetRelationTypes() ([]string, error) {
 	var (
 		url    string
