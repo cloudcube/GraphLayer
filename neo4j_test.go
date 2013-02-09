@@ -108,7 +108,8 @@ func TestCreateNode(t *testing.T) {
 	}
 }*/
 
-func TestGetRelationTypes(test *testing.T) {
+//TestGetRelationTypes() 查找所有的关系类型
+/*func TestGetRelationTypes(test *testing.T) {
 	var nRelationshipTypes []string
 	dbClient, err := GetDbClient()
 	nRelationshipTypes, err = dbClient.GetRelationTypes()
@@ -118,4 +119,31 @@ func TestGetRelationTypes(test *testing.T) {
 	for _, relationshipType := range nRelationshipTypes {
 		fmt.Println(relationshipType)
 	}
-}
+}*/
+
+//TestCreateRelationship() 测试创建节点关系，并且返回节点相关数据:)
+/*func TestCreateRelationship(t *testing.T) {
+	var (
+		startId  uint64
+		endId    uint64
+		rType    string
+		err      error
+		dbClient *Neo4j
+		dataSet  map[int]*NeoTemplate
+	)
+	startId = 280
+	endId = 282
+	rType = "HAS_REL"
+	dbClient, err = GetDbClient()
+	if err != nil {
+		t.Error(err.Error())
+	}
+	data := make(map[string]string)
+	data["SECURITY"] = "+RW"
+	dataSet, err = dbClient.CreateRelationship(startId, endId, data, rType)
+	if err != nil {
+		t.Error(err.Error())
+	}
+	fmt.Println(len(dataSet))
+	fmt.Println(dataSet[0])
+}*/

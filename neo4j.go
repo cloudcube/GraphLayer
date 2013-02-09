@@ -391,14 +391,16 @@ func (this *Neo4j) DelRelationship(id ...uint64) error {
 /*
 CreateRelationship(src node id uint, dst node id uint, data map[string]string, relationship type string) returns any errors raised as error
 */
-func (this *Neo4j) CreateRelationship(src uint64, dst uint64, data map[string]string, rType string) error {
-	dstNode, err := this.GetNode(dst) // find properties for destination node so we can tie it into the relationship
+func (this *Neo4j) CreateRelationship(src uint64, dst uint64, data map[string]string, rType string) (dataSet map[int]*NeoTemplate, err error) {
+	dataSet = make(map[int]*NeoTemplate)
+	var dstNode, srcNode *NeoTemplate
+	dstNode, err = this.GetNode(dst) // find properties for destination node so we can tie it into the relationship
 	if err != nil {
-		return err
+		return
 	}
-	srcNode, err := this.GetNode(src) // find properties for src node..
+	srcNode, err = this.GetNode(src) // find properties for src node..
 	if err != nil {
-		return err
+		return
 	}
 	j := map[string]interface{}{} // empty map: keys are always strings in json, values vary
 	j["to"] = dstNode.Self
@@ -407,18 +409,24 @@ func (this *Neo4j) CreateRelationship(src uint64, dst uint64, data map[string]st
 	j["data"] = data                // add data to relationship
 	s, err := json.Marshal(j)
 	if err != nil {
-		return errors.New("Unable to Marshal Json data")
+		err = errors.New("Unable to Marshal Json data")
+		return
 	}
 	this.Method = "post"
-	_, err = this.send(srcNode.RelationshipsCreate, string(s)) // srcNode.RelationshipsCreate actually contains the full URL
+	var body string
+	body, err = this.send(srcNode.RelationshipsCreate, string(s)) // srcNode.RelationshipsCreate actually contains the full URL
 	if err != nil {
-		return err
+		return
+	}
+	dataSet, err = this.unmarshal(body)
+	if err != nil {
+		return
 	}
 	errorList := map[int]error{
 		404: errors.New("Node or 'to' node not found."),
 		400: errors.New("Invalid data sent."),
 	}
-	return this.NewError(errorList)
+	return dataSet, this.NewError(errorList)
 }
 
 /* 
@@ -680,8 +688,6 @@ func (this *Neo4j) send(url string, data string) (string, error) {
 	case "get":
 		fallthrough
 	default:
-		// fmt.Println("&&&&&&&&&&&&&&&&")
-		// fmt.Println(url)
 		req, e := http.NewRequest("GET", url, nil)
 		if e != nil {
 			err = e
