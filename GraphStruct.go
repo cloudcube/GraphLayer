@@ -1,7 +1,7 @@
 package graphdb
 
 import (
-	neo4j "neo4j"
+	neo4j "github.com/innovationturbo/graphdb/neo4j"
 )
 
 type ServiceRootTemplate struct {
