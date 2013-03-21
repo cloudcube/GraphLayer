@@ -1,0 +1,5 @@
+{
+	"url":"http://localhost:7474/db/data",
+	"username":"test",
+	"password":"123456"
+}
