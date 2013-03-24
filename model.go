@@ -1,7 +1,5 @@
 package graphdb
 
-import ()
-
 type ServiceRootTemplate struct {
 	Extensions        []string
 	Node              string
@@ -14,6 +12,43 @@ type ServiceRootTemplate struct {
 	Neo4jVersion      string
 }
 
+//Relationship Template
+type RelationshipTemplate struct {
+	Extensions map[string]interface{}
+	Start      string
+	Property   string
+	Self       string
+	Properties string
+	Type       string
+	End        string
+	Data       map[string]interface{}
+}
+
+//Node Template
+type NodeTemplate struct {
+	Extensions                 map[string]interface{}
+	OutgoingRelationships      string
+	PagedTraverse              string
+	AllTypedRelationships      string
+	Property                   string
+	AllRelationships           string
+	Self                       string
+	OutgoingTypedRelationships string
+	Properties                 string
+	IncomingRelationships      string
+	IncomingTypedRelationships string
+	CreateRelationship         string
+	Data                       map[string]interface{}
+}
+
+//Index Template
+type IndexTemplate struct {
+	Template string
+	Provider string
+	Type     string
+}
+
+//GraphDataTemplate
 type GraphDataTemplate struct {
 	ID                  uint64
 	Relationships       string
@@ -37,13 +72,9 @@ type GraphDataTemplate struct {
 
 }
 
-type CypherResultTemplate struct {
-}
-
-type IndexTemplate struct {
-	Template string
-	Type     string
-	Provider string
+type CypherQueryTemplate struct {
+	Columns []string
+	Data    [][]interface{}
 }
 
 type Session struct {

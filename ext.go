@@ -7,7 +7,7 @@ type GraphDbInterface interface {
 	GetServiceRoot() (*ServiceRootTemplate, error)
 
 	// 查询语句查询
-	CypherQueries() (*CypherResultTemplate, error)
+	CypherQueries() (*CypherQueryTemplate, error)
 
 	// 从索引中移除条目
 	RemoveEntriesFromIndex() error
