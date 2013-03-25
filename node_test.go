@@ -7,7 +7,7 @@ import (
 
 var ID uint64
 
-var settingFile = "databaseConfig.json"
+// var settingFile = "databaseConfig.json"
 
 func TestCreateNode(t *testing.T) {
 	log.Println("Start testing CreateNode function")

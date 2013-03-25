@@ -1,7 +1,6 @@
 package graphdb
 
 import (
-	"encoding/json"
 	"errors"
 	"strconv"
 	"strings"
@@ -9,20 +8,20 @@ import (
 
 /*type PropertyInterface interface {
 
-	// 根据名称查找属性
-	GetPropertyByName(nodeId uint64, name string) (string, error)
-
 	// 设置节点属性
-	SetPropertyOnNode(nodeId uint64, data map[string]string, isReplace bool) error
+	SetPropertyOnNode(nodeId uint64, data map[string]string) error
 
 	// 更新节点属性
-	UpdateNodeProperties() error
+	UpdateNodeProperties(nodeId uint64,data map[string]string) error
 
 	// 获取节点属性
-	GetPropertiesFromNode() (*GraphDataTemplate, error)
+	GetPropertiesForNode(nodeId uint64) (*GraphDataTemplate, error)
 
 	// 删除节点属性
-	DeletePropertyFromNode() error
+	DeletePropertyFromNode(nodeId uint64) error
+
+	//删除所有节点属性
+	DeletePropertiesFromNode(nodeId uint64) error
 
 	// 设置关系属性
 	SetRelationshipProperties() error
@@ -37,50 +36,21 @@ import (
 	RemovePropertiesFromRelationship() error
 }*/
 
-// 根据名称查找属性
-func (session *Session) GetPropertyByName(nodeId uint64, name string) (string, error) {
-	if len(name) < 1 {
-		return "", errors.New("Property name must be at least 1 character.")
-	}
-	node, err := session.GetNode(nodeId)
-	if err != nil {
-		return "", err
-	}
-	session.Method = "get"
-	body, err := session.Send(node.Property+"/"+name, "")
-	if err != nil {
-		return "", err
-	}
-	errorList := map[int]error{
-		404: errors.New("Node or Property not found."),
-		204: errors.New("No Properties found."),
-	}
-	return body, session.NewError(errorList)
-}
-
 // 设置节点属性
-func (session *Session) SetPropertyOnNode(nodeId uint64, data map[string]string, isReplace bool) error {
+func (session *Session) SetPropertyOnNode(nodeId uint64, data map[string]string) error {
 	node, err := session.GetNode(nodeId)
 	if err != nil {
 		return err
 	}
 	session.Method = "put"
-	s, err := json.Marshal(data)
 	if err != nil {
 		return err
 	}
-	if isReplace {
-		_, err := session.Send(node.Properties, string(s))
+	for k, v := range data {
+		k = strings.TrimSpace(k)
+		_, err := session.Send(node.Properties+"/"+k, strconv.Quote(v))
 		if err != nil {
 			return err
-		}
-	} else {
-		for k, v := range data {
-			k = strings.TrimSpace(k)
-			_, err := session.Send(node.Properties+"/"+k, strconv.Quote(v))
-			if err != nil {
-				return err
-			}
 		}
 	}
 	errorList := map[int]error{

@@ -8,6 +8,8 @@ import (
 	"strings"
 )
 
+var settingFile = "databaseConfig.json"
+
 func (session *Session) Unmarshal(s string) (dataSet map[int]*GraphDataTemplate, err error) {
 	var (
 		templateNode map[string]interface{}   // blank interface for json.Unmarshal; used for node lvl data
