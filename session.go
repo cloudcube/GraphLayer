@@ -118,3 +118,14 @@ func (session *Session) setAuth(req http.Request) {
 		req.SetBasicAuth(session.Username, session.Password)
 	}
 }
+
+// packs string literal into json object structure around variable "varName"
+// data string should already be in json format
+func (session *Session) Pack(name string, data string) ([]byte, error) {
+	buf := new(bytes.Buffer)
+	err := json.Compact(buf, []byte("{ \""+name+"\": "+data+" } ")) // pkg data into new json string then compact() it onto our empty buffer
+	if err != nil {
+		return nil, err
+	}
+	return buf.Bytes(), err
+}
