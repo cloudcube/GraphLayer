@@ -1,9 +1,19 @@
 package graphdb
 
 import (
+	autoTest "github.com/remogatto/prettytest"
 	"log"
 	"testing"
 )
+
+//test setup start
+type testSuite struct {
+	autoTest.Suite
+}
+
+func TestRunner(t *testing.T) {
+	autoTest.Run(t, new(testSuite))
+}
 
 //test set property on a node
 func TestSetPropertyOnNode(t *testing.T) {
@@ -196,4 +206,89 @@ func TestUpdateRelationshipProperties(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
+}
+
+func TestRemovePropertyFromRelationship(t *testing.T) {
+	t.Log("Starting test RemovePropertyFromRelationship")
+	session, err := Dial(settingFile)
+	if err != nil {
+		t.Error(err)
+	}
+	t.Log("test data prapare.")
+	data := map[string]string{}
+	data["name"] = "node01"
+	node1, err := session.CreateNode(data)
+	data["name"] = "node02"
+	node2, err := session.CreateNode(data)
+	relDesc := map[string]string{}
+	relDesc["Role"] = "Admin"
+	relType := "LOVES"
+	relationship, err := session.CreateRelationship(node1.ID, node2.ID, relDesc, relType)
+	if err != nil {
+		t.Error(err)
+	}
+	err = session.RemovePropertyFromRelationship(relationship[0].ID, "Role")
+	if err != nil {
+		t.Error(err)
+	}
+	t.Log("Starting Clear Data ...")
+	err = session.DeleteRelationship(relationship[0].ID)
+	if err != nil {
+		t.Error(err)
+	}
+	err = session.DeleteNode(node1.ID)
+	if err != nil {
+		t.Error(err)
+	}
+	err = session.DeleteNode(node2.ID)
+	if err != nil {
+		t.Error(err)
+	}
+	t.Log("test Data Cleanred")
+	t.Log("test RemovePropertyFromRelationship finished!")
+}
+
+func TestRemovePropertiesFromRelationship(t *testing.T) {
+	t.Log("Starting test RemovePropertiesFromRelationship")
+	session, err := Dial(settingFile)
+	if err != nil {
+		t.Error(err)
+	}
+	t.Log("Test data prapare...")
+	data := map[string]string{}
+	data["name"] = "n01"
+
+	node1, err := session.CreateNode(data)
+	if err != nil {
+		t.Error(err)
+	}
+	data["name"] = "n02"
+	node2, err := session.CreateNode(data)
+	if err != nil {
+
+		t.Error(err)
+	}
+	relDesc := map[string]string{}
+	relDesc["access"] = "+WR"
+	relType := "ROLE"
+	relationship, err := session.CreateRelationship(node1.ID, node2.ID, relDesc, relType)
+	if err != nil {
+		t.Error(err)
+	}
+	t.Log(relationship[0])
+	err = session.RemovePropertiesFromRelationship(relationship[0].ID)
+	if err != nil {
+		t.Error(err)
+	}
+	t.Log("clear data...")
+	err = session.DeleteNode(node1.ID)
+	if err != nil {
+		t.Error(err)
+	}
+	err = session.DeleteNode(node2.ID)
+	if err != nil {
+		t.Error(err)
+	}
+	t.Log("test data cleared")
+	t.Log("test RemovePropertiesFromRelationship finished.")
 }

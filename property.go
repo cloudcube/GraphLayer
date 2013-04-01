@@ -27,8 +27,9 @@ import (
 	// 更新关系属性
 	UpdateRelationshipProperties() error
 
-	// 获取关系属性
-	GetPropertiesFromRelationship() (*GraphDataTemplate, error)
+	//Remove Relationship property from Single Relationship.
+	RemovePropertyFromRelationship() error
+
 
 	// 移除关系属性
 	RemovePropertiesFromRelationship() error
@@ -105,7 +106,7 @@ func (session *Session) GetPropertiesForNode(nodeId uint64) (nodeData *GraphData
 		404: errors.New("Node or Property not found."),
 		204: errors.New("No properties found."),
 	}
-	return template[0], this.NewError(errorList)
+	return template[0], session.NewError(errorList)
 }
 
 // 删除节点属性
@@ -154,12 +155,46 @@ func (session *Session) UpdateRelationshipProperties(relId uint64, data map[stri
 	if err != nil {
 		return err
 	}
-	_, err = session.Send(relationship[0].ID, string(buf))
+	_, err = session.Send(relationship[0].Self, string(buf))
 	if err != nil {
 		return err
 	}
 	errorList := map[int]error{
 		404: errors.New("Node or Property not found."),
+	}
+	return session.NewError(errorList)
+}
+
+//Rmove a single property from relationship
+func (session *Session) RemovePropertyFromRelationship(relId uint64, key string) error {
+	relationship, err := session.GetRelationshipById(relId)
+	if err != nil {
+		return err
+	}
+	session.Method = "delete"
+	_, err = session.Send(relationship[0].Properties+"/"+key, "")
+	if err != nil {
+		return err
+	}
+	errorList := map[int]error{
+		404: errors.New("Relationship or Property not found."),
+	}
+	return session.NewError(errorList)
+}
+
+//remove multiply properties from relationship
+func (session *Session) RemovePropertiesFromRelationship(relId uint64) error {
+	relationship, err := session.GetRelationshipById(relId)
+	if err != nil {
+		return err
+	}
+	session.Method = "delete"
+	_, err = session.Send(relationship[0].Self, "")
+	if err != nil {
+		return err
+	}
+	errorList := map[int]error{
+		404: errors.New("Relationship or properties not found!"),
 	}
 	return session.NewError(errorList)
 }
