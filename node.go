@@ -3,7 +3,7 @@ package graphdb
 import (
 	"encoding/json"
 	"errors"
-	"log"
+	// "log"
 	"strconv"
 )
 
@@ -30,7 +30,7 @@ func (session *Session) CreateNode(data map[string]string) (nodeTempalte *GraphD
 	if err != nil {
 		return nodeTempalte, err
 	}
-	log.Println(body)
+	// log.Println(body)
 	template, err := session.Unmarshal(body) // json.Unmarshal wrapper with some type assertions etc
 	if err != nil {
 		return nodeTempalte, err

@@ -36,12 +36,6 @@ type GraphDbInterface interface {
 	// 通过查询语句从自动索引中查找节点
 	FindNodeFromAutomaticIndexByQuery() (map[int]*GraphDataTemplate, error)
 
-	// 为节点创建自动索引
-	CreateAutoIndexForNodes() (*IndexTemplate, error)
-
-	// 为关系创建自动索引
-	CreateAutoIndexForRelationships() (*IndexTemplate, error)
-
 	// 为节点上的自动索引获取当前状态
 	GetNowStatusForAutoIndexing() (bool, error)
 
