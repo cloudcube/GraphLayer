@@ -54,7 +54,7 @@ func TestCreateNodeIndexWithConf(t *testing.T) {
 	//data's key must be name
 	// data["name"] = "test"
 	indexName := "indexName001"
-	indexType := "fulltext"
+	indexType := "exact"
 	indexProvider := "lucene"
 	err = session.CreateNodeIndexWithConf(indexName, indexType, indexProvider)
 	if err != nil {
