@@ -132,3 +132,56 @@ func (session *Session) AddNodeToIndex(key string, value string, indexName strin
 	}
 	return result[0], session.NewError(errorList)
 }
+
+func (session *Session) CreateAutoIndexForNodes(indexName string, indexType string, indexProvider string) error {
+	session.Method = "post"
+	config := map[string]string{}
+	config["type"] = indexType
+	config["provider"] = indexProvider
+	data := map[string]interface{}{}
+	data["name"] = indexName
+	data["config"] = config
+	s, err := json.Marshal(data)
+	if err != nil {
+		return err
+	}
+	url := session.URL
+	url += "/" + "index" + "/" + "node"
+	body, err := session.Send(url, string(s))
+	if err != nil {
+		return err
+	}
+	log.Println(body)
+	errorList := map[int]error{
+		400: errors.New("Invalid data send."),
+	}
+	return session.NewError(errorList)
+}
+
+func (session *Session) CreateAutoIndexForRelationships(indexName string, indexType string, indexProvider string) error {
+	session.Method = "post"
+	url := session.URL
+	url += "/" + "index" + "/" + "relationship"
+	config := map[string]string{
+		"type":     indexType,
+		"provider": indexProvider,
+	}
+	data := map[string]interface{}{
+		"name":   indexName,
+		"config": config,
+	}
+	s, err := json.Marshal(data)
+	if err != nil {
+		return err
+	}
+	body, err := session.Send(url, string(s))
+	if err != nil {
+		return err
+	}
+	log.Println("body content:")
+	log.Println(body)
+	errorList := map[int]error{
+		400: errors.New("Invalid data send."),
+	}
+	return session.NewError(errorList)
+}

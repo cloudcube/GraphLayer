@@ -172,4 +172,58 @@ func TestAddNodeToIndex(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
+	log.Println("AddNodeToIndex test finished.")
+}
+
+func TestCreateAutoIndexForNodes(t *testing.T) {
+	session, err := Dial(settingFile)
+	if err != nil {
+		t.Error(err)
+	}
+	data := map[string]string{
+		"name": "autoIndex",
+	}
+	node, err := session.CreateNode(data)
+	if err != nil {
+		t.Error(err)
+	}
+	indexName := "node_auto_index"
+	indexType := "fulltext"
+	indexProvider := "lucene"
+	err = session.CreateAutoIndexForNodes(indexName, indexType, indexProvider)
+	if err != nil {
+		t.Error(err)
+	}
+	log.Println("clear data ...")
+	err = session.DeleteNodeIndex(indexName)
+	if err != nil {
+		t.Error(err)
+	}
+	err = session.DeleteNode(node.ID)
+	if err != nil {
+		t.Error(err)
+	}
+	log.Println("data cleared!")
+}
+
+func TestCreateAutoIndexForRelationships(t *testing.T) {
+	log.Println("start testing CreateAutoIndexForRelationships ...")
+	session, err := Dial(settingFile)
+	if err != nil {
+		t.Error(err)
+	}
+	indexName := "relationship_auto_index"
+	indexType := "exact"
+	indexProvider := "lucene"
+	err = session.CreateAutoIndexForRelationships(indexName, indexType, indexProvider)
+	if err != nil {
+		t.Error(err)
+	}
+	log.Println("clear data ...")
+	err = session.DeleteNodeIndex(indexName)
+	if err != nil {
+		t.Error(err)
+	}
+	log.Println("dat cleared!")
+	log.Println("CreateAutoIndexForRelationships test finished!")
 }
