@@ -1,15 +1,16 @@
 package graphdb
 
 type ServiceRootTemplate struct {
-	Extensions        []string
-	Node              string
-	ReferenceNode     string
-	RelationshipIndex string
-	ExtensionsInfo    string
-	RelationshipTypes string
-	Batch             string
-	Cypher            string
-	Neo4jVersion      string
+	Extensions         map[string]interface{}
+	Node               string
+	Reference_Node     string
+	Node_Index         string
+	Relationship_Index string
+	Extensions_Info    string
+	Relationship_Types string
+	Batch              string
+	Cypher             string
+	Neo4j_Version      string
 }
 
 //Relationship Template
