@@ -48,6 +48,16 @@ type IndexTemplate struct {
 	Type     string
 }
 
+type config struct {
+	configType string
+	provider   string
+}
+
+type IndexConfig struct {
+	Name string
+	config
+}
+
 //GraphDataTemplate
 type GraphDataTemplate struct {
 	ID                  uint64
