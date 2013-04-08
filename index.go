@@ -90,7 +90,7 @@ func (session *Session) ListNodeIndexes() (*GraphDataTemplate, error) {
 
 func (session *Session) DeleteNodeIndex(key string) error {
 	session.Method = "delete"
-	url := session.URL + "/index" + "/node/"
+	url := session.URL + "/index" + "/node"
 	_, err := session.Send(url+"/"+key, "")
 	if err != nil {
 		return err
