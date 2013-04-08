@@ -2,6 +2,7 @@ package graphdb
 
 import (
 	"log"
+	"strconv"
 	"testing"
 )
 
@@ -21,4 +22,85 @@ func TestGetServiceRoot(t *testing.T) {
 	}
 	log.Println(data)
 	log.Println("GetServiceRoot test finished!")
+}
+
+func TestCypherQueries(t *testing.T) {
+	log.Println("Start testing CypherQueries")
+	session, err := Dial(settingFile)
+	if err != nil {
+		t.Error(err)
+	}
+	log.Println("Prepare data ...")
+	data := map[string]string{
+		"name": "test01",
+	}
+	node1, err := session.CreateNode(data)
+	if err != nil {
+		t.Error(err)
+	}
+	data["name"] = "test02"
+	node2, err := session.CreateNode(data)
+	if err != nil {
+		t.Error(err)
+	}
+	data["name"] = "test03"
+	data["age"] = "1"
+	node3, err := session.CreateNode(data)
+	if err != nil {
+		t.Error(err)
+	}
+	relDesc := map[string]string{
+		"v01": "v01",
+	}
+	relType := "KNOW"
+	relationship1, err := session.CreateRelationship(node1.ID, node2.ID, relDesc, relType)
+	if err != nil {
+		t.Error(err)
+	}
+	relDesc["v02"] = "v02"
+	relationship2, err := session.CreateRelationship(node1.ID, node3.ID, relDesc, relType)
+	if err != nil {
+		t.Error(err)
+	}
+	log.Println("data ok!")
+	query := "start x=node(" + strconv.FormatUint(node1.ID, 10) + ") match x-[r]->n return type(r),n.name?,n.age?"
+	log.Println(query)
+	parameters := map[string]string{}
+	result, err := session.CypherQueries(query, parameters)
+	if err != nil {
+		t.Error(err)
+	}
+	log.Println(len(result.Columns))
+	for _, cloumn := range result.Columns {
+		log.Println(cloumn)
+	}
+	for _, data := range result.Data {
+		log.Println(data)
+	}
+	log.Println(relationship1[0].ID)
+	log.Println(relationship2[0].ID)
+	log.Println("clean data ...")
+	err = session.DeleteRelationship(relationship1[0].ID)
+	if err != nil {
+		t.Error(err)
+	}
+	err = session.DeleteRelationship(relationship2[0].ID)
+	if err != nil {
+		t.Error(err)
+	}
+	err = session.DeleteNode(node1.ID)
+	if err != nil {
+		t.Error(err)
+	}
+	err = session.DeleteNode(node2.ID)
+	if err != nil {
+		t.Error(err)
+	}
+	err = session.DeleteNode(node3.ID)
+	if err != nil {
+		t.Error(err)
+	}
+	log.Println("data cleared")
+	log.Println("CypherQueries test finished.")
+
 }

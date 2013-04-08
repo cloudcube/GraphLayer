@@ -2,7 +2,7 @@ package graphdb
 
 import (
 	"encoding/json"
-	// "log"
+	"log"
 )
 
 //定义结构获取数据，都必须streaming传输，提高性能。
@@ -12,7 +12,7 @@ import (
 // 	GetServiceRoot() (*ServiceRootTemplate, error)
 
 // 	// 查询语句查询
-// 	CypherQueries() (*CypherQueryTemplate, error)
+// 	CypherQueries(query string, parameters map[string]string) (*CypherQueryTemplate, error)
 
 // 	// 从索引中移除条目
 // 	RemoveEntriesFromIndex() error
@@ -97,4 +97,31 @@ func (session *Session) GetServiceRoot() (serviceRoot *ServiceRootTemplate, err 
 		return serviceRoot, err
 	}
 	return serviceRoot, nil
+}
+
+// 查询语句查询
+func (session *Session) CypherQueries(query string, parameters map[string]string) (cypherQueryResult *CypherQueryTemplate, err error) {
+	session.Method = "post"
+	url := session.URL + "/" + "cypher"
+	if len(parameters) == 0 {
+		parameters = map[string]string{}
+	}
+	data := map[string]interface{}{
+		"query":  query,
+		"params": parameters,
+	}
+	buf, err := json.Marshal(data)
+	if err != nil {
+		return cypherQueryResult, err
+	}
+	body, err := session.Send(url, string(buf))
+	if err != nil {
+		return cypherQueryResult, err
+	}
+	log.Println(body)
+	err = json.Unmarshal([]byte(body), &cypherQueryResult)
+	if err != nil {
+		return cypherQueryResult, err
+	}
+	return cypherQueryResult, nil
 }
