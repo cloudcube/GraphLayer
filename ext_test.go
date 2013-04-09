@@ -127,6 +127,7 @@ func TestRemoveEntriesFromIndex(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
+	log.Println(node1)
 	err = session.DeleteNodeIndex(indexName)
 	if err != nil {
 		t.Error(err)
@@ -148,6 +149,7 @@ func TestRemoveEntriesFromIndex(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
+	log.Println(node2)
 	err = session.DeleteNodeIndex(indexName)
 	if err != nil {
 		t.Error(err)
@@ -163,6 +165,7 @@ func TestRemoveEntriesFromIndex(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
+	log.Println(node3)
 	err = session.DeleteNodeIndex(indexName)
 	if err != nil {
 		t.Error(err)
@@ -171,4 +174,68 @@ func TestRemoveEntriesFromIndex(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
+}
+
+func TestFindNodeByMatch(t *testing.T) {
+	log.Println("Starting test FindNodeByMatch")
+	session, err := Dial(settingFile)
+	if err != nil {
+		t.Error(err)
+	}
+	indexName := "testIndex01"
+	err = session.CreateNodeIndex(indexName)
+	if err != nil {
+		t.Error(err)
+	}
+	data := map[string]string{}
+	data["name"] = "testNode01"
+	data["k01"] = "v01"
+	node1, err := session.CreateNode(data)
+	if err != nil {
+		t.Error(err)
+	}
+	key := "indexKey01"
+	value := "indexValue01"
+	_, err = session.AddNodeToIndex(key, value, indexName, node1.ID)
+	if err != nil {
+		t.Error(err)
+	}
+	data1 := map[string]string{
+		"name": "testNode02",
+		"k01":  "v01",
+		"k02":  "v02",
+	}
+	node2, err := session.CreateNode(data1)
+	if err != nil {
+		t.Error(err)
+	}
+	_, err = session.AddNodeToIndex(key, value, indexName, node2.ID)
+	if err != nil {
+		t.Error(err)
+	}
+	indexKey := key
+	indexValue := value
+	results, err := session.FindNodeByMatch(indexName, indexKey, indexValue)
+	if err != nil {
+		t.Error(err)
+	}
+	log.Println(len(results))
+	for _, result := range results {
+		log.Println(result)
+	}
+	log.Println("clean data ...")
+	err = session.DeleteNode(node1.ID)
+	if err != nil {
+		t.Error(err)
+	}
+	err = session.DeleteNode(node2.ID)
+	if err != nil {
+		t.Error(err)
+	}
+	err = session.DeleteNodeIndex(indexName)
+	if err != nil {
+		t.Error(err)
+	}
+	log.Println("data cleared!")
+	log.Println("FindNodeByMatch test finished!")
 }

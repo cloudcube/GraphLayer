@@ -20,7 +20,7 @@ import (
 // 	RemoveEntriesFromIndex() error
 
 // 	// 通过匹配查找节点
-// 	FindNodeByMatch() (map[int]*GraphDataTemplate, error)
+// 	FindNodeByMatch(indexName string, indexKey string, indexValue string) (map[int]*GraphDataTemplate, error)
 
 // 	// 通过查询语句查找节点
 // 	FindNodeByQuery() (map[int]*GraphDataTemplate, error)
@@ -151,9 +151,41 @@ func (session *Session) RemoveEntriesFromIndex(nodeId uint64, indexName string, 
 	if err != nil {
 		return err
 	}
+	log.Println("print body ...")
 	log.Println(body)
 	errorList := map[int]error{
 		400: errors.New("Invalid data"),
 	}
 	return session.NewError(errorList)
+}
+
+// 通过匹配查找节点
+func (session *Session) FindNodeByMatch(indexName string, indexKey string, indexValue string) (results map[int]*GraphDataTemplate, err error) {
+	session.Method = "get"
+	url := session.URL
+	url += "/" + "index" + "/" + "node"
+	if len(indexName) == 0 {
+		return results, errors.New("Index Name Invalid.")
+	}
+	url += "/" + indexName
+	if len(indexKey) == 0 {
+		return results, errors.New("Index Key Invalid.")
+	}
+	url += "/" + indexKey
+	if len(indexValue) == 0 {
+		return results, errors.New("Index Value Invalid.")
+	}
+	url += "/" + indexValue
+	body, err := session.Send(url, "")
+	if err != nil {
+		return results, err
+	}
+	results, err = session.Unmarshal(body)
+	if err != nil {
+		return results, err
+	}
+	errorList := map[int]error{
+		400: errors.New("Invalid data send ."),
+	}
+	return results, session.NewError(errorList)
 }
