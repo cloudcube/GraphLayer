@@ -104,3 +104,71 @@ func TestCypherQueries(t *testing.T) {
 	log.Println("CypherQueries test finished.")
 
 }
+
+func TestRemoveEntriesFromIndex(t *testing.T) {
+	session, err := Dial(settingFile)
+	if err != nil {
+		t.Error(err)
+	}
+	data := map[string]string{
+		"name": "kn01",
+		"v01":  "v01",
+		"v02":  "v02",
+	}
+	node1, err := session.CreateNode(data)
+	indexName := "kvnode"
+	err = session.CreateNodeIndex(indexName)
+	if err != nil {
+		t.Error(err)
+	}
+	key := ""
+	value := ""
+	err = session.RemoveEntriesFromIndex(node1.ID, indexName, key, value)
+	if err != nil {
+		t.Error(err)
+	}
+	err = session.DeleteNodeIndex(indexName)
+	if err != nil {
+		t.Error(err)
+	}
+	err = session.DeleteNode(node1.ID)
+	if err != nil {
+		t.Error(err)
+	}
+
+	data2 := map[string]string{
+		"name": "kn02",
+		"v01":  "v01",
+		"v02":  "v02",
+	}
+	node2, err := session.CreateNode(data2)
+	key = "v01"
+	value = ""
+	err = session.RemoveEntriesFromIndex(node2.ID, indexName, key, value)
+	if err != nil {
+		t.Error(err)
+	}
+	err = session.DeleteNodeIndex(indexName)
+	if err != nil {
+		t.Error(err)
+	}
+	err = session.DeleteNode(node2.ID)
+	if err != nil {
+		t.Error(err)
+	}
+	node3, err := session.CreateNode(data2)
+	key = "v01"
+	value = "v01"
+	err = session.RemoveEntriesFromIndex(node3.ID, indexName, key, value)
+	if err != nil {
+		t.Error(err)
+	}
+	err = session.DeleteNodeIndex(indexName)
+	if err != nil {
+		t.Error(err)
+	}
+	err = session.DeleteNode(node3.ID)
+	if err != nil {
+		t.Error(err)
+	}
+}

@@ -2,7 +2,9 @@ package graphdb
 
 import (
 	"encoding/json"
+	"errors"
 	"log"
+	"strconv"
 )
 
 //定义结构获取数据，都必须streaming传输，提高性能。
@@ -124,4 +126,34 @@ func (session *Session) CypherQueries(query string, parameters map[string]string
 		return cypherQueryResult, err
 	}
 	return cypherQueryResult, nil
+}
+
+func (session *Session) RemoveEntriesFromIndex(nodeId uint64, indexName string, key string, value string) error {
+	session.Method = "delete"
+	url := session.URL
+	url += "/" + "index" + "/" + "node"
+	if len(indexName) == 0 {
+		return errors.New("indexName nil!")
+	}
+	url += "/" + indexName
+	if len(key) > 0 {
+		url += "/" + key
+	}
+	if len(value) > 0 {
+		url += "/" + value
+	}
+	if nodeId == 0 {
+		return errors.New("nodeId invalid!")
+	}
+	url += "/" + strconv.FormatUint(nodeId, 10)
+	log.Println(url)
+	body, err := session.Send(url, "")
+	if err != nil {
+		return err
+	}
+	log.Println(body)
+	errorList := map[int]error{
+		400: errors.New("Invalid data"),
+	}
+	return session.NewError(errorList)
 }
