@@ -258,3 +258,65 @@ func TestFindNodeByMatch(t *testing.T) {
 	log.Println("data cleared!")
 	log.Println("FindNodeByMatch test finished!")
 }
+
+func TestFindNodeByQuery(t *testing.T) {
+	log.Println("Start testing FindNodeByQuery")
+	session, err := Dial(settingFile)
+	if err != nil {
+		t.Error(err)
+	}
+	log.Println("Create Index,type lucene")
+	indexName := "testIndex"
+	indexType := "fulltext"
+	indexProvider := "lucene"
+	err = session.CreateNodeIndexWithConf(indexName, indexType, indexProvider)
+	if err != nil {
+		t.Error(err)
+	}
+	log.Println("create two nodes")
+	data := map[string]string{
+		"name":  "test01",
+		"key01": "value01",
+	}
+	node1, err := session.CreateNode(data)
+	if err != nil {
+		t.Error(err)
+	}
+	data["name"] = "test02"
+	node2, err := session.CreateNode(data)
+	if err != nil {
+		t.Error(err)
+	}
+	indexKey := "some key"
+	indexValue := "some value"
+	_, err = session.AddNodeToIndex(indexKey, indexValue, indexName, node1.ID)
+	if err != nil {
+		t.Error(err)
+	}
+	_, err = session.AddNodeToIndex(indexKey, indexValue, indexName, node2.ID)
+	if err != nil {
+		t.Error(err)
+	}
+	luceneQuery := "indexKey:some*"
+	results, err := session.FindNodeByQuery(indexName, luceneQuery)
+	// results, err := session.FindNodeByMatch(indexName, indexKey, indexValue)
+	log.Println(len(results))
+	for _, result := range results {
+		log.Println(result)
+	}
+	log.Println("Clean data...")
+	err = session.DeleteNode(node1.ID)
+	if err != nil {
+		t.Error(err)
+	}
+	err = session.DeleteNode(node2.ID)
+	if err != nil {
+		t.Error(err)
+	}
+	err = session.DeleteNodeIndex(indexName)
+	if err != nil {
+		t.Error(err)
+	}
+	log.Println("data cleaned")
+	log.Println("FindNodeByQuery test finished!")
+}

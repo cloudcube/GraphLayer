@@ -189,3 +189,32 @@ func (session *Session) FindNodeByMatch(indexName string, indexKey string, index
 	}
 	return results, session.NewError(errorList)
 }
+
+// 通过查询语句查找节点
+func (session *Session) FindNodeByQuery(indexName string, luceneQuery string) (dataResults map[int]*GraphDataTemplate, err error) {
+	session.Method = "get"
+	url := session.URL + "/" + "index" + "/" + "node"
+	if len(indexName) == 0 {
+		return dataResults, errors.New("Index can't be nil")
+	}
+	url += "/" + indexName
+	if len(luceneQuery) == 0 {
+		return dataResults, errors.New("lucene query can't be nil")
+	}
+	url += "?" + "query=" + luceneQuery
+	log.Println(url)
+	body, err := session.Send(url, "")
+	if err != nil {
+		return dataResults, err
+	}
+	log.Println(session.StatusCode)
+	log.Println(body)
+	dataResults, err = session.Unmarshal(body)
+	if err != nil {
+		return dataResults, err
+	}
+	errorList := map[int]error{
+		400: errors.New("Invalid data send."),
+	}
+	return dataResults, session.NewError(errorList)
+}
