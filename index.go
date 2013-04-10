@@ -102,16 +102,16 @@ func (session *Session) DeleteNodeIndex(key string) error {
 
 }
 
-func (session *Session) AddNodeToIndex(key string, value string, indexName string, id uint64) (*GraphDataTemplate, error) {
-	node, err := session.GetNode(id)
+func (session *Session) AddNodeToIndex(indexKey string, indexValue string, indexName string, nodeId uint64) (*GraphDataTemplate, error) {
+	node, err := session.GetNode(nodeId)
 	if err != nil {
 		return nil, err
 	}
 	nodeSelf := node.Self
 	url := session.URL + "/index/node/" + indexName
 	data := map[string]string{}
-	data["key"] = key
-	data["value"] = value
+	data["key"] = indexKey
+	data["value"] = indexValue
 	data["uri"] = nodeSelf
 	s, err := json.Marshal(data)
 	if err != nil {
