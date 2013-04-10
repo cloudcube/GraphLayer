@@ -128,7 +128,7 @@ func (session *Session) CypherQueries(query string, parameters map[string]string
 	return cypherQueryResult, nil
 }
 
-func (session *Session) RemoveEntriesFromIndex(nodeId uint64, indexName string, key string, value string) error {
+func (session *Session) RemoveEntriesFromIndex(nodeId uint64, indexName string, indexKey string, indexValue string) error {
 	session.Method = "delete"
 	url := session.URL
 	url += "/" + "index" + "/" + "node"
@@ -136,11 +136,11 @@ func (session *Session) RemoveEntriesFromIndex(nodeId uint64, indexName string, 
 		return errors.New("indexName nil!")
 	}
 	url += "/" + indexName
-	if len(key) > 0 {
-		url += "/" + key
+	if len(indexKey) > 0 {
+		url += "/" + indexKey
 	}
-	if len(value) > 0 {
-		url += "/" + value
+	if len(indexValue) > 0 {
+		url += "/" + indexValue
 	}
 	if nodeId == 0 {
 		return errors.New("nodeId invalid!")
