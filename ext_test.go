@@ -287,8 +287,8 @@ func TestFindNodeByQuery(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	indexKey := "some key"
-	indexValue := "some value"
+	indexKey := "Name"
+	indexValue := "test name"
 	_, err = session.AddNodeToIndex(indexKey, indexValue, indexName, node1.ID)
 	if err != nil {
 		t.Error(err)
@@ -297,7 +297,7 @@ func TestFindNodeByQuery(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	luceneQuery := "indexKey:some*"
+	luceneQuery := "Name:test*"
 	results, err := session.FindNodeByQuery(indexName, luceneQuery)
 	// results, err := session.FindNodeByMatch(indexName, indexKey, indexValue)
 	log.Println(len(results))

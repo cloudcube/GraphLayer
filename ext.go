@@ -202,13 +202,10 @@ func (session *Session) FindNodeByQuery(indexName string, luceneQuery string) (d
 		return dataResults, errors.New("lucene query can't be nil")
 	}
 	url += "?" + "query=" + luceneQuery
-	log.Println(url)
 	body, err := session.Send(url, "")
 	if err != nil {
 		return dataResults, err
 	}
-	log.Println(session.StatusCode)
-	log.Println(body)
 	dataResults, err = session.Unmarshal(body)
 	if err != nil {
 		return dataResults, err
