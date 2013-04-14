@@ -19,7 +19,7 @@ import (
 // }
 
 //创建节点
-func (session *Session) CreateNode(data map[string]string) (nodeTempalte *GraphDataTemplate, err error) {
+func (session *Session) CreateNode(data map[string]interface{}) (nodeTempalte *GraphDataTemplate, err error) {
 	s, err := json.Marshal(data)
 	if err != nil {
 		return nodeTempalte, errors.New("Unable to Marshal Json data")
