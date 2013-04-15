@@ -99,7 +99,19 @@ func (session *Session) DeleteNodeIndex(key string) error {
 		400: errors.New("Invalid data send."),
 	}
 	return session.NewError(errorList)
+}
 
+func (session *Session) DeleteRelationshipIndex(key string) error {
+	session.Method = "delete"
+	url := session.URL + "/index" + "/relationship"
+	_, err := session.Send(url+"/"+key, "")
+	if err != nil {
+		return err
+	}
+	errorList := map[int]error{
+		400: errors.New("Invalid data send."),
+	}
+	return session.NewError(errorList)
 }
 
 func (session *Session) AddNodeToIndex(indexKey string, indexValue string, indexName string, nodeId uint64) (*GraphDataTemplate, error) {
