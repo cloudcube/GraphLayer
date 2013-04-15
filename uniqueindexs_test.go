@@ -29,22 +29,23 @@ func TestCreateUniqueNode(t *testing.T) {
 		"properties": oneNode,
 	}
 	log.Println("Create a unique node in an index")
-	result, err := session.CreateUniqueNode(indexName, data)
+	result1, err := session.CreateUniqueNode(indexName, data)
 	if err != nil {
 		t.Error(err)
 	}
-	log.Println(result)
+	log.Println("&&&&&&&&&&&&&&&")
+	log.Println(result1.ID)
 	log.Println("Create a unique node in an index (the case where it exists)")
 	data1 := map[string]interface{}{
-		"key":        "okokok",
-		"value":      "Exist Node Test.",
+		"key":        "name",
+		"value":      "Tobias",
 		"properties": oneNode,
 	}
-	result, err = session.CreateUniqueNode(indexName, data1)
+	result2, err := session.CreateUniqueNode(indexName, data1)
 	if err != nil {
 		t.Error(err)
 	}
-	log.Println(result)
+	log.Println(result2)
 	log.Println("Add a node to an index unless a node already exists for the given mapping")
 	nodeData := map[string]interface{}{
 		"name": "node002",
@@ -59,11 +60,11 @@ func TestCreateUniqueNode(t *testing.T) {
 		"value": "Mattias",
 		"uri":   node02.Self,
 	}
-	result, err = session.CreateUniqueNode(indexName, data2)
+	result3, err := session.CreateUniqueNode(indexName, data2)
 	if err != nil {
 		t.Error(err)
 	}
-	log.Println(result)
+	log.Println(result3)
 	log.Println("clear data ...")
 	err = session.DeleteNode(node02.ID)
 	if err != nil {
