@@ -101,3 +101,113 @@ func TestCreateUniqueNode(t *testing.T) {
 	log.Println("data cleaned!")
 	log.Println("test CreateUniqueNode finshed!")
 }
+
+func TestCreateUniqueRelationship(t *testing.T) {
+	log.Println("Create a unique relationship in an index")
+	session, err := Dial(settingFile)
+	if err != nil {
+		t.Error(err)
+	}
+	log.Println("prepare data...")
+	data1 := map[string]interface{}{
+		"name": "node01",
+	}
+	node1, err := session.CreateNode(data1)
+	if err != nil {
+		t.Error(err)
+	}
+	data2 := map[string]interface{}{
+		"name": "node02",
+	}
+	node2, err := session.CreateNode(data2)
+	if err != nil {
+		t.Error(err)
+	}
+	indexKey := "index01"
+	indexValue := "value01"
+	startUri := node1.Self
+	endUri := node2.Self
+	relationType := "knowledge"
+	resultData, err := session.CreateUniqueRelationship(indexKey, indexValue, startUri, endUri, relationType)
+	if err != nil {
+		t.Error(err)
+	}
+	log.Println(resultData)
+	log.Println("clear data...")
+	err = session.DeleteRelationship(resultData.ID)
+	if err != nil {
+		t.Error(err)
+	}
+	err = session.DeleteNode(node1.ID)
+	if err != nil {
+		t.Error(err)
+	}
+	err = session.DeleteNode(node2.ID)
+	if err != nil {
+		t.Error(err)
+	}
+	err = session.DeleteRelationshipIndex(relationType)
+	if err != nil {
+		t.Error(err)
+	}
+	//but i don't know how to delete relationship's index.
+	log.Println("data cleaned!")
+}
+
+func TestAddRelationshipToIndex(t *testing.T) {
+	log.Println("Add a relationship to an index unless a relationship already exists for the given mapping")
+	session, err := Dial(settingFile)
+	if err != nil {
+		t.Error(err)
+	}
+	log.Println("prepare data...")
+	data1 := map[string]interface{}{
+		"name": "node01",
+	}
+	node1, err := session.CreateNode(data1)
+	if err != nil {
+		t.Error(err)
+	}
+	data2 := map[string]interface{}{
+		"name": "node02",
+	}
+	node2, err := session.CreateNode(data2)
+	if err != nil {
+		t.Error(err)
+	}
+	relDesc := map[string]string{
+		"name": "rel01",
+		"k01":  "v01",
+	}
+	relType := "DENY"
+	dataSet, err := session.CreateRelationship(node1.ID, node2.ID, relDesc, relType)
+
+	indexKey := "k01"
+	indexValue := "v01"
+	result, err := session.AddRelationshipToIndex(indexKey, indexValue, dataSet[0].Self, relType)
+	if err != nil {
+		t.Error(err)
+	}
+	log.Println(result)
+	// log.Println(resultData)
+	log.Println("clear data...")
+	err = session.DeleteRelationship(result.ID)
+	if err != nil {
+		t.Error(err)
+	}
+	err = session.DeleteNode(node1.ID)
+	if err != nil {
+		t.Error(err)
+	}
+	err = session.DeleteNode(node2.ID)
+	if err != nil {
+		t.Error(err)
+	}
+	err = session.DeleteRelationshipIndex(relType)
+	if err != nil {
+		t.Error(err)
+	}
+	//but i don't know how to delete relationship's index.
+	log.Println("data cleaned!")
+	log.Println("test finished!!!")
+}
