@@ -18,7 +18,28 @@ func (session *Session) FindNodeFromAutomaticIndexByMatch(nodeKey string, nodeVa
 		return dataResults, errors.New("nodeValue is nil")
 	}
 	url += "/" + nodeValue
-	body, err := session.Send(url, "")
+	return session.findNodeFromAutomaticIndexByUri(url)
+}
+
+func (session *Session) FindNodeFromAutomaticIndexByQuery(nodeKey string, nodeValue string) (dataResults map[int]*GraphDataTemplate, err error) {
+	session.Method = "get"
+	url := session.URL
+	url += "/" + "index" + "/" + "auto" + "/" + "node"
+	url += "/" + "?" + "query="
+	if len(nodeKey) == 0 {
+		return dataResults, errors.New("nodekey is nil!")
+	}
+	url += nodeKey
+	if len(nodeValue) == 0 {
+		return dataResults, errors.New("nodeValue is nil!")
+	}
+	url += ":" + nodeValue
+	return session.findNodeFromAutomaticIndexByUri(url)
+
+}
+
+func (session *Session) findNodeFromAutomaticIndexByUri(uri string) (dataResults map[int]*GraphDataTemplate, err error) {
+	body, err := session.Send(uri, "")
 	if err != nil {
 		return dataResults, err
 	}
