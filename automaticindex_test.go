@@ -80,3 +80,48 @@ func TestFindNodeFindNodeFromAutomaticIndexByQuery(t *testing.T) {
 		t.Error(err)
 	}
 }
+
+func TestCrateAutoIndexWithConf(t *testing.T) {
+	log.Println("Starting test CrateAutoIndexWithConf!")
+	session, err := Dial(settingFile)
+	if err != nil {
+		t.Error(err)
+	}
+	log.Println("create auto index for node")
+	indexType := "fulltext"
+	indexProvider := "lucene"
+	category := "node"
+	err = session.CrateAutoIndexWithConf(indexType, indexProvider, category)
+	if err != nil {
+		t.Error(err)
+	}
+	log.Println("create auto index for relationship")
+	category = "relationship"
+	err = session.CrateAutoIndexWithConf(indexType, indexProvider, category)
+	if err != nil {
+		t.Error(err)
+	}
+}
+
+func TestGetAutoIndexStatus(t *testing.T) {
+	log.Println("Starting test GetAutoIndexStatus")
+	session, err := Dial(settingFile)
+	if err != nil {
+		t.Error(err)
+	}
+	log.Println("get node auto index status")
+	category := "node"
+	status, err := session.GetAutoIndexStatus(category)
+	if err != nil {
+		t.Error(err)
+	}
+	log.Println(status)
+	log.Println("get relationship auto index status")
+	category = "relationship"
+	status, err = session.GetAutoIndexStatus(category)
+	if err != nil {
+		t.Error(err)
+	}
+	log.Println(status)
+	log.Println("get auto index status test finished!")
+}
