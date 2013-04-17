@@ -142,3 +142,33 @@ func (session *Session) LookuplistAutoIndexProperties(category string) (indexPro
 	}
 	return indexProperties, err
 }
+
+func (session *Session) AddPropertyForAutoIndex(property string, category string) (err error) {
+	session.Method = "post"
+	url := session.getAutoIndexUri(category)
+	url += "properties"
+	buf, err := json.Marshal(property)
+	if err != nil {
+		return err
+	}
+	_, err = session.Send(url, string(buf))
+	if err != nil {
+		return err
+	}
+	return
+}
+
+func (session *Session) RemovePropertyForAutoIndex(property string, category string) (err error) {
+	session.Method = "delete"
+	url := session.getAutoIndexUri(category)
+	url += "properties"
+	buf, err := json.Marshal(property)
+	if err != nil {
+		return err
+	}
+	_, err = session.Send(url, string(buf))
+	if err != nil {
+		return err
+	}
+	return
+}

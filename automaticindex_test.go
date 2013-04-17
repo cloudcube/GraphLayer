@@ -194,3 +194,74 @@ func TestLookuplistAutoIndexProperties(t *testing.T) {
 	}
 	log.Println("LookuplistAutoIndexProperties test finished!")
 }
+
+func TestAddPropertyForAutoIndex(t *testing.T) {
+	session, err := Dial(settingFile)
+	if err != nil {
+		t.Error(err)
+	}
+	log.Println("test add property for node autoindex ")
+	category := "node"
+	property := "education"
+	err = session.AddPropertyForAutoIndex(property, category)
+	if err != nil {
+		t.Error(err)
+	}
+	log.Println("lookup list node autoindex properties")
+	results, err := session.LookuplistAutoIndexProperties(category)
+	for _, result := range results {
+		log.Println(result)
+	}
+	log.Println("test add property for relationship autoindex")
+	category = "relationship"
+	property = "life"
+	err = session.AddPropertyForAutoIndex(property, category)
+	if err != nil {
+		t.Error(err)
+	}
+	log.Println("lookup list relationship autoindex properties")
+	results, err = session.LookuplistAutoIndexProperties(category)
+	if err != nil {
+		t.Error(err)
+	}
+	for _, result := range results {
+		log.Println(result)
+	}
+	log.Println("AddPropertyForAutoIndex test finished!")
+}
+
+func TestRemovePropertyForAutoIndex(t *testing.T) {
+	session, err := Dial(settingFile)
+	if err != nil {
+		t.Error(err)
+	}
+	log.Println("test remove property for node autoindex")
+	category := "node"
+	property := "book"
+	err = session.RemovePropertyForAutoIndex(property, category)
+	if err != nil {
+		t.Error(err)
+	}
+	log.Println("lookup list node autoindex properties")
+	results, err := session.LookuplistAutoIndexProperties(category)
+	for _, result := range results {
+		log.Println(result)
+	}
+	log.Println("test remove property for relationship autoindex")
+	property = "life"
+	category = "relationship"
+	err = session.RemovePropertyForAutoIndex(property, category)
+	if err != nil {
+		t.Error(err)
+	}
+	log.Println("lookup list relationship autoindex properties")
+	results, err = session.LookuplistAutoIndexProperties(category)
+	if err != nil {
+		t.Error(err)
+	}
+	for _, result := range results {
+		log.Println(result)
+	}
+	log.Println("RemovePropertyForAutoIndex test finished!")
+
+}
