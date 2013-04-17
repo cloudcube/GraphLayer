@@ -125,3 +125,46 @@ func TestGetAutoIndexStatus(t *testing.T) {
 	log.Println(status)
 	log.Println("get auto index status test finished!")
 }
+
+func TestEnableAutoindex(t *testing.T) {
+	log.Println("Starting test EnableNodeAutoindex")
+	session, err := Dial(settingFile)
+	if err != nil {
+		t.Error(err)
+	}
+	log.Println("test set node auto index status")
+	status := false
+	category := "node"
+	status, err = session.GetAutoIndexStatus(category)
+	if err != nil {
+		t.Error(err)
+	}
+	if !status {
+		status = true
+		err = session.EnableAutoindex(status, category)
+		if err != nil {
+			t.Error(err)
+		}
+	}
+	status, err = session.GetAutoIndexStatus(category)
+	if err != nil {
+		t.Error(err)
+	}
+	log.Println("node auto idnex status")
+	log.Println(status)
+	log.Println("test set relationship auto index status")
+	category = "relationship"
+	status, err = session.GetAutoIndexStatus(category)
+	if err != nil {
+		t.Error(err)
+	}
+	if !status {
+		log.Println("runing here!")
+		status = true
+		err = session.EnableAutoindex(status, category)
+	}
+	status, err = session.GetAutoIndexStatus(category)
+	log.Println("relationship auto index status")
+	log.Println(status)
+	log.Println("EnableNodeAutoindex test finished")
+}

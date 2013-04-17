@@ -87,8 +87,7 @@ func (session *Session) CrateAutoIndexWithConf(indexType string, indexProvider s
 	return err
 }
 
-func (session *Session) GetAutoIndexStatus(category string) (bool, error) {
-	session.Method = "get"
+func (session *Session) dealAutoIndexStatus(category string) string {
 	url := session.URL
 	if category == "node" {
 		url += "/" + "index" + "/" + "auto" + "/" + "node" + "/"
@@ -97,6 +96,12 @@ func (session *Session) GetAutoIndexStatus(category string) (bool, error) {
 		url += "/" + "index" + "/" + "auto" + "/" + "relationship" + "/"
 	}
 	url += "status"
+	return url
+}
+
+func (session *Session) GetAutoIndexStatus(category string) (bool, error) {
+	session.Method = "get"
+	url := session.dealAutoIndexStatus(category)
 	body, err := session.Send(url, "")
 	if err != nil {
 		return false, err
@@ -107,3 +112,34 @@ func (session *Session) GetAutoIndexStatus(category string) (bool, error) {
 	}
 	return status, nil
 }
+
+func (session *Session) EnableAutoindex(status bool, category string) (err error) {
+	session.Method = "put"
+	url := session.dealAutoIndexStatus(category)
+	buf, err := json.Marshal(status)
+	if err != nil {
+		return err
+	}
+	_, err = session.Send(url, string(buf))
+	if err != nil {
+		return err
+	}
+	return err
+}
+
+func (session *Session) getAutoIndexUri(category string) string {
+	url := session.URL
+	if category == "node" {
+		url += "/" + "index" + "/" + "auto" + "/" + "node" + "/"
+	}
+	if category == "relationship" {
+		url += "/" + "index" + "/" + "auto" + "/" + "relationship" + "/"
+	}
+	return url
+}
+
+// func (session *Session) LookuplistAutoIndexProperties() (indexProperties []string, err error) {
+// 	session.Method = "get"
+// 	url := session.URL
+
+// }
