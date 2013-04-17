@@ -168,3 +168,29 @@ func TestEnableAutoindex(t *testing.T) {
 	log.Println(status)
 	log.Println("EnableNodeAutoindex test finished")
 }
+
+func TestLookuplistAutoIndexProperties(t *testing.T) {
+	session, err := Dial(settingFile)
+	if err != nil {
+		t.Error(err)
+	}
+	log.Println("test lookup list node autoindex properties")
+	category := "node"
+	results, err := session.LookuplistAutoIndexProperties(category)
+	if err != nil {
+		t.Error(err)
+	}
+	for _, result := range results {
+		log.Println(result)
+	}
+	log.Println("loookup list relationship autoindex properties")
+	category = "relationship"
+	results, err = session.LookuplistAutoIndexProperties(category)
+	if err != nil {
+		t.Error(err)
+	}
+	for _, result := range results {
+		log.Println(result)
+	}
+	log.Println("LookuplistAutoIndexProperties test finished!")
+}
