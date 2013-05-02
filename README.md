@@ -16,7 +16,7 @@ graphdb is a graph database,it can manipulate and analyze graph data!
   /creatomg a paged traverser)-still under active development,
 
 
-##Features
+##To Do:
 * Built-In Graph Algorithms
 * Batch Operations
 * Gremlin
