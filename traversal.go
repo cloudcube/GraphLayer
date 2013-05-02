@@ -55,7 +55,7 @@ import (
 	"strconv"
 )
 
-func (session *Session) Traversal(startNode uint64, order string, return_filter map[string]string, prune_evaluator map[string]string, uniqueness string, relationships []map[string]string, max_depth uint64) (dataResults map[int]*GraphDataTemplate, err error) {
+func (session *Session) TraversalByFilter(startNode uint64, order string, return_filter map[string]string, prune_evaluator map[string]string, uniqueness string, relationships []map[string]string, max_depth uint64) (dataResults map[int]*GraphDataTemplate, err error) {
 	session.Method = "post"
 	url := session.URL
 	url += "/" + "node"
@@ -101,4 +101,166 @@ func (session *Session) Traversal(startNode uint64, order string, return_filter 
 		400: errors.New("Invalid data send."),
 	}
 	return dataResults, session.NewError(errorList)
+}
+
+// 	// 从一个遍历返回关系
+func (session *Session) GetRelationshipsFromTraversal(startNode uint64, order string, uniqueness string, return_filter map[string]string) (dataResults map[int]*GraphDataTemplate, err error) {
+	session.Method = "post"
+	url := session.URL
+	url += "/" + "node"
+	if startNode < 0 {
+		return dataResults, errors.New("start node is invalid")
+	}
+	url += "/" + strconv.FormatUint(startNode, 10)
+	url += "/" + traverse
+	url += "/" + relationship
+	data := map[string]interface{}{}
+	if len(order) == 0 {
+		return dataResults, errors.New("order is nil!")
+	}
+	data["order"] = order
+	if len(uniqueness) == 0 {
+		return dataResults, errors.New("uniqueness is nil!")
+	}
+	data["uniqueness"] = uniqueness
+	if return_filter == nil {
+		return dataResults, errors.New("return filter is nil!")
+	}
+	data["return_filter"] = return_filter
+	buf, err := json.Marshal(data)
+	if err != nil {
+		return
+	}
+	body, err := session.Send(url, string(buf))
+	if err != nil {
+		return
+	}
+	dataResults, err = session.Unmarshal(body)
+	if err != nil {
+		return
+	}
+	errorList := map[int]error{
+		400: errors.New("Invalid data send."),
+	}
+	return dataResults, session.NewError(errorList)
+}
+
+// 从一个遍历返回路径
+func (sesstion *Session) GetPathsFromTraversal(startNode uint64, order string, uniqueness string, return_filter map[string]string) (dataResults map[int]*GraphDataTemplate, err error) {
+	session.Method = "post"
+	url := session.URL
+	url += "/" + "node"
+	if startNode < 0 {
+		return dataResults, errors.New("start node is invalid")
+	}
+	url += "/" + strconv.FormatUint(startNode, 10)
+	url += "/" + traverse
+	url += "/" + path
+	data := map[string]interface{}{}
+	if len(order) == 0 {
+		return dataResults, errors.New("order is nil!")
+	}
+	data["order"] = order
+	if len(uniqueness) == 0 {
+		return dataResults, errors.New("uniqueness is nil!")
+	}
+	data["uniqueness"] = uniqueness
+	if return_filter == nil {
+		return dataResults, errors.New("return filter is nil!")
+	}
+	data["return_filter"] = return_filter
+	buf, err := json.Marshal(data)
+	if err != nil {
+		return
+	}
+	body, err := session.Send(url, string(buf))
+	if err != nil {
+		return
+	}
+	dataResults, err = session.Unmarshal(body)
+	if err != nil {
+		return
+	}
+	errorList := map[int]error{
+		400: errors.New("Invalid data send."),
+	}
+	return dataResults, session.NewError(errorList)
+}
+
+// 遍历返回低于一定深度的节点
+func (session *Session) GetNodesBelowDepthAtTraversal(startNode uint64, return_filter map[stinrg]string, pure_evaluator map[string]string) (dataResults map[int]*GraphDataTemplate, err error) {
+	session.Method = "post"
+	url := session.URL
+	url += "/" + "node"
+	if startNode < 0 {
+		return dataResults, errors.New("node id is invalid")
+	}
+	url += "/" + strconv.FormatInt(startNode, base)
+	url += "/" + "traverse" + "/" + "node"
+	data := map[string]interface{}{}
+	data["return_filter"] = return_filter
+	data["prune_evaluator"] = pure_evaluator
+	buf, err := json.Marshal(data)
+	if err != nil {
+		return dataResults, err
+	}
+	body, err := session.Send(url, string(buf))
+	if err != nil {
+		return
+	}
+	dataResults, err = session.Unmarshal(body)
+	if err != nil {
+		return
+	}
+	return
+}
+
+// 创建一个分页的遍历
+func (session *Session) CreatedPagedTraversers(startNode uint64, prune_evaluator map[string]string, return_filter map[string]string, order string, relationships map[string]string) (dataResults map[int]*GraphDataTemplate, err error) {
+	session.Method = "post"
+	url := session.URL
+	url += "/" + node
+	url += "/" + strconv.FormatUint(startNode, 10)
+	url += "/" + paged + "/" + "traverse" + "/" + "node"
+	data := map[string]interface{}{}
+	if prune_evaluator == nil {
+		return dataResults, errors.New("prune_evaluator is nil!")
+	}
+	data["prune_evaluator"] = prune_evaluator
+	if return_filter == nil {
+		return dataResults, errors.New("return_filter is nil!")
+	}
+	data["return_filter"] = return_filter
+	if len(order) == 0 {
+		return dataResults, errors.New("order is nil!")
+	}
+	data["order"] = order
+	if relationships == nil {
+		return dataResults, errors.New("relationships is nil!")
+	}
+	data["relationships"] = relationships
+	buf, err := json.Marshal(data)
+	if err != nil {
+		return
+	}
+	dataResults, err = session.Unmarshal(body)
+	if err != nil {
+		return
+	}
+	return
+}
+
+// 获取分页遍历的分页结果
+func (session *Session) GetPagingResultPagedTraverser() error {
+
+}
+
+// 为分页索引设置分页大小
+func (session *Session) SetPageSizeForPagedTraverser() error {
+
+}
+
+// 设置分页遍历的超时时间
+func (session *Session) SetPagedTraverserTimeout() error {
+
 }
