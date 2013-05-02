@@ -250,17 +250,88 @@ func (session *Session) CreatedPagedTraversers(startNode uint64, prune_evaluator
 	return
 }
 
-// 获取分页遍历的分页结果
-func (session *Session) GetPagingResultPagedTraverser() error {
-
+// 18.13.6 Paging through the results of a paged traverser
+func (session *Session) GetPagingResultPagedTraverser(traversalUri string) (dataResults map[int]*GraphDataTemplate, err error) {
+	session.Method = "get"
+	body, err := session.Send(traversalUri, "")
+	if err != nil {
+		return
+	}
+	dataResults, err = session.Unmarshal(body)
+	if err != nil {
+		return
+	}
+	return
 }
 
 // 为分页索引设置分页大小
-func (session *Session) SetPageSizeForPagedTraverser() error {
-
+func (session *Session) SetPageSizeForPagedTraverser(startNode uint64, pageSize uint64, prune_evaluator map[string]string, return_filter map[string]string, order string, relationships map[string]string) (dataResults map[int]*GraphDataTemplate, err error) {
+	session.Method = "post"
+	url := session.URL
+	url += "/" + "node" + "/" + strconv.FormatUint(startNode, 10) + "/" + "paged" + "/" + "traverse" + "/" + "node" + "?" + "pageSize" + "=" + strconv.FormatUint(pageSize, 10)
+	data := map[string]interface{}{}
+	if prune_evaluator == nil {
+		return dataResults, errors.New("prune evaluator is nil!")
+	}
+	data["prune_evaluator"] = prune_evaluator
+	if return_filter == nil {
+		return dataResults, errors.New("return filter is nil!")
+	}
+	data["return_filter"] = return_filter
+	if len(order) == 0 {
+		return dataResults, errors.New("order can't be associated!")
+	}
+	data["order"] = order
+	if relationships == nil {
+		return dataResults, errors.New("relationship is nil!")
+	}
+	buf, err := json.Marshal(data)
+	if err != nil {
+		return dataResults, err
+	}
+	body, err := session.Send(url, string(buf))
+	if err != nil {
+		return dataResults, err
+	}
+	dataResults, err = session.Unmarshal(body)
+	if err != nil {
+		return
+	}
+	return
 }
 
 // 设置分页遍历的超时时间
-func (session *Session) SetPagedTraverserTimeout() error {
-
+func (session *Session) SetPagedTraverserTimeout(startNode uint64, leaseTime uint64, prune_evaluator map[string]string, return_filter map[string]string, order string, relationships map[string]string) (dataResults map[int]*GraphDataTemplate, err error) {
+	session.Method = "post"
+	url := session.URL
+	url += "/" + "node" + "/" + strconv.FormatUint(startNode, 10) + "/" + "paged" + "/" + "traverse" + "/" + "node" + "?" + "leaseTime" + "=" + strconv.FormatUint(leaseTime, 10)
+	data := map[string]interface{}{}
+	if prune_evaluator == nil {
+		return dataResults, errors.New("prune evaluator is nil!")
+	}
+	data["prune_evaluator"] = prune_evaluator
+	if return_filter == nil {
+		return dataResults, errors.New("return filter is nil!")
+	}
+	data["return_filter"] = return_filter
+	if len(order) == 0 {
+		return dataResults, errors.New("order can't be associated!")
+	}
+	data["order"] = order
+	if relationships == nil {
+		return dataResults, errors.New("relationship is nil!")
+	}
+	buf, err := json.Marshal(data)
+	if err != nil {
+		return dataResults, err
+	}
+	body, err := session.Send(url, string(buf))
+	if err != nil {
+		return dataResults, err
+	}
+	dataResults, err = session.Unmarshal(body)
+	if err != nil {
+		return
+	}
+	return
 }
