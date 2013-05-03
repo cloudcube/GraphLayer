@@ -31,7 +31,7 @@ func TestCypherQueries(t *testing.T) {
 		t.Error(err)
 	}
 	log.Println("Prepare data ...")
-	data := map[string]string{
+	data := map[string]interface{}{
 		"name": "test01",
 	}
 	node1, err := session.CreateNode(data)
@@ -118,7 +118,7 @@ func TestRemoveEntriesFromIndex(t *testing.T) {
 		t.Error(err)
 	}
 	log.Println("create one node")
-	data := map[string]string{
+	data := map[string]interface{}{
 		"name": "node01",
 		"k01":  "v01",
 	}
@@ -132,7 +132,7 @@ func TestRemoveEntriesFromIndex(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	data2 := map[string]string{
+	data2 := map[string]interface{}{
 		"name": "node02",
 		"k01":  "v01",
 	}
@@ -206,7 +206,7 @@ func TestFindNodeByMatch(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	data := map[string]string{}
+	data := map[string]interface{}{}
 	data["name"] = "testNode01"
 	data["k01"] = "v01"
 	node1, err := session.CreateNode(data)
@@ -219,7 +219,7 @@ func TestFindNodeByMatch(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	data1 := map[string]string{
+	data1 := map[string]interface{}{
 		"name": "testNode02",
 		"k01":  "v01",
 		"k02":  "v02",
@@ -274,7 +274,7 @@ func TestFindNodeByQuery(t *testing.T) {
 		t.Error(err)
 	}
 	log.Println("create two nodes")
-	data := map[string]string{
+	data := map[string]interface{}{
 		"name":  "test01",
 		"key01": "value01",
 	}

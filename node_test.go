@@ -15,7 +15,7 @@ func TestCreateNode(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	data := make(map[string]string)
+	data := make(map[string]interface{})
 	data["name"] = "001"
 	data["sex"] = "male"
 	node, err := session.CreateNode(data)

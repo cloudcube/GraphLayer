@@ -22,7 +22,7 @@ func TestSetPropertyOnNode(t *testing.T) {
 		t.Error(err)
 	}
 	log.Println("Prepare data ...")
-	data := make(map[string]string)
+	data := make(map[string]interface{})
 	data["name"] = "001"
 	data["sex"] = "female"
 	node01, err := session.CreateNode(data)
@@ -52,7 +52,7 @@ func TestUpdateNodeProperties(t *testing.T) {
 		t.Error(err)
 	}
 	log.Println("Prepare data ...")
-	data := map[string]string{}
+	data := map[string]interface{}{}
 	data["name"] = "001"
 	data["value01"] = "v01"
 	node, err := session.CreateNode(data)
@@ -62,7 +62,7 @@ func TestUpdateNodeProperties(t *testing.T) {
 	log.Println("Starting test UpdateNodeProperties")
 	data2 := map[string]string{}
 	data2["name"] = "002"
-	err = session.UpdateNodeProperties(node.ID, data)
+	err = session.UpdateNodeProperties(node.ID, data2)
 	if err != nil {
 		t.Error(err)
 	}
@@ -81,7 +81,7 @@ func TestGetPropertiesForNode(t *testing.T) {
 		t.Error(err)
 	}
 	log.Println("Prepare data ...")
-	data := map[string]string{}
+	data := map[string]interface{}{}
 	data["name"] = "001"
 	data["value01"] = "v01"
 	node, err := session.CreateNode(data)
@@ -109,7 +109,7 @@ func TestDeletePropertyFromNode(t *testing.T) {
 		t.Error(err)
 	}
 	log.Println("Prepare data ...")
-	data := map[string]string{}
+	data := map[string]interface{}{}
 	data["name"] = "001"
 	data["value01"] = "v01"
 	node, err := session.CreateNode(data)
@@ -136,7 +136,7 @@ func TestDeletePropertiesFromNode(t *testing.T) {
 		t.Error(err)
 	}
 	log.Println("Prepare data ...")
-	data := map[string]string{}
+	data := map[string]interface{}{}
 	data["name"] = "001"
 	data["value01"] = "v01"
 	node, err := session.CreateNode(data)
@@ -163,14 +163,14 @@ func TestUpdateRelationshipProperties(t *testing.T) {
 		t.Error(err)
 	}
 	log.Println("Prepare data ...")
-	data := map[string]string{}
+	data := map[string]interface{}{}
 	data["name"] = "001"
 	data["value01"] = "v01"
 	node1, err := session.CreateNode(data)
 	if err != nil {
 		t.Error(err)
 	}
-	data2 := map[string]string{}
+	data2 := map[string]interface{}{}
 	data2["name"] = "002"
 	data2["value01"] = "v02"
 	node2, err := session.CreateNode(data2)
@@ -215,7 +215,7 @@ func TestRemovePropertyFromRelationship(t *testing.T) {
 		t.Error(err)
 	}
 	t.Log("test data prapare.")
-	data := map[string]string{}
+	data := map[string]interface{}{}
 	data["name"] = "node01"
 	node1, err := session.CreateNode(data)
 	data["name"] = "node02"
@@ -255,7 +255,7 @@ func TestRemovePropertiesFromRelationship(t *testing.T) {
 		t.Error(err)
 	}
 	t.Log("Test data prapare...")
-	data := map[string]string{}
+	data := map[string]interface{}{}
 	data["name"] = "n01"
 
 	node1, err := session.CreateNode(data)

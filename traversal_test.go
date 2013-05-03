@@ -178,7 +178,7 @@ func TestGetRelationshipsFromTraversal(t *testing.T) {
 		t.Error(err)
 	}
 	log.Println("Create relationships")
-	relDesc := ""
+	relDesc := map[string]string{}
 	relType := "know"
 	rel1, err := session.CreateRelationship(node1.ID, node3.ID, relDesc, relType)
 	if err != nil {
@@ -251,7 +251,7 @@ func TestGetPathsFromTraversal(t *testing.T) {
 		t.Error(err)
 	}
 	log.Println("Create relationships")
-	relDesc := ""
+	relDesc := map[string]string{}
 	relType := "know"
 	rel1, err := session.CreateRelationship(node1.ID, node3.ID, relDesc, relType)
 	if err != nil {

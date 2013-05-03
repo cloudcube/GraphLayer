@@ -11,7 +11,7 @@ func TestCreateNodeIndex(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	data := map[string]string{}
+	data := map[string]interface{}{}
 	data["name"] = "index01"
 	node, err := session.CreateNode(data)
 	if err != nil {
@@ -44,7 +44,7 @@ func TestCreateNodeIndexWithConf(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	data := map[string]string{}
+	data := map[string]interface{}{}
 	data["name"] = "index01"
 	node, err := session.CreateNode(data)
 	if err != nil {
@@ -128,7 +128,7 @@ func TestAddNodeToIndex(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	data := map[string]string{}
+	data := map[string]interface{}{}
 	data["name"] = "v01"
 	node01, err := session.CreateNode(data)
 	if err != nil {
@@ -180,7 +180,7 @@ func TestCreateAutoIndexForNodes(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	data := map[string]string{
+	data := map[string]interface{}{
 		"name": "autoIndex",
 	}
 	node, err := session.CreateNode(data)

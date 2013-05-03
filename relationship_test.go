@@ -12,13 +12,13 @@ func TestCreateRelationship(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	data := make(map[string]string)
+	data := make(map[string]interface{})
 	data["name"] = "001"
 	srcNode, err := session.CreateNode(data)
 	if err != nil {
 		t.Error(err)
 	}
-	data = make(map[string]string)
+	data = make(map[string]interface{})
 	data["name"] = "002"
 	destNode, err := session.CreateNode(data)
 
@@ -56,7 +56,7 @@ func TestGetRelationshipById(t *testing.T) {
 		t.Error(err)
 	}
 	log.Println("Prepare test data")
-	data := make(map[string]string)
+	data := make(map[string]interface{})
 	data["name"] = "001"
 	srcNode, err := session.CreateNode(data)
 	if err != nil {
@@ -110,7 +110,7 @@ func TestGetRelationshipsOnNode(t *testing.T) {
 		t.Error(err)
 	}
 	log.Println("Prepare data ...")
-	data := make(map[string]string)
+	data := make(map[string]interface{})
 	data["name"] = "001"
 	data1, err := session.CreateNode(data)
 	if err != nil {
@@ -226,7 +226,7 @@ func TestGetRelationshipTypes(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	data := make(map[string]string)
+	data := make(map[string]interface{})
 	data["name"] = "001"
 	node01, err := session.CreateNode(data)
 	if err != nil {
@@ -302,7 +302,7 @@ func TestDeleteRelationship(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	data := make(map[string]string)
+	data := make(map[string]interface{})
 	data["name"] = "001"
 	node01, err := session.CreateNode(data)
 	if err != nil {
