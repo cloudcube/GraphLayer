@@ -112,8 +112,8 @@ func (session *Session) GetRelationshipsFromTraversal(startNode uint64, order st
 		return dataResults, errors.New("start node is invalid")
 	}
 	url += "/" + strconv.FormatUint(startNode, 10)
-	url += "/" + traverse
-	url += "/" + relationship
+	url += "/" + "traverse"
+	url += "/" + "relationship"
 	data := map[string]interface{}{}
 	if len(order) == 0 {
 		return dataResults, errors.New("order is nil!")
@@ -146,7 +146,7 @@ func (session *Session) GetRelationshipsFromTraversal(startNode uint64, order st
 }
 
 // 从一个遍历返回路径
-func (sesstion *Session) GetPathsFromTraversal(startNode uint64, order string, uniqueness string, return_filter map[string]string) (dataResults map[int]*GraphDataTemplate, err error) {
+func (session *Session) GetPathsFromTraversal(startNode uint64, order string, uniqueness string, return_filter map[string]string) (dataResults map[int]*GraphDataTemplate, err error) {
 	session.Method = "post"
 	url := session.URL
 	url += "/" + "node"
@@ -154,8 +154,8 @@ func (sesstion *Session) GetPathsFromTraversal(startNode uint64, order string, u
 		return dataResults, errors.New("start node is invalid")
 	}
 	url += "/" + strconv.FormatUint(startNode, 10)
-	url += "/" + traverse
-	url += "/" + path
+	url += "/" + "traverse"
+	url += "/" + "path"
 	data := map[string]interface{}{}
 	if len(order) == 0 {
 		return dataResults, errors.New("order is nil!")
@@ -188,7 +188,7 @@ func (sesstion *Session) GetPathsFromTraversal(startNode uint64, order string, u
 }
 
 // 遍历返回低于一定深度的节点
-func (session *Session) GetNodesBelowDepthAtTraversal(startNode uint64, return_filter map[stinrg]string, pure_evaluator map[string]string) (dataResults map[int]*GraphDataTemplate, err error) {
+func (session *Session) GetNodesBelowDepthAtTraversal(startNode uint64, return_filter map[string]string, pure_evaluator map[string]string) (dataResults map[int]*GraphDataTemplate, err error) {
 	session.Method = "post"
 	url := session.URL
 	url += "/" + "node"
