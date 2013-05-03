@@ -1,4 +1,8 @@
 language: go
-
-script:
- - go test -v
+services: neo4j
+notifications:
+  email:
+    recipients:
+      david@cloudcube.net
+    on_success: change
+    on_failure: always
