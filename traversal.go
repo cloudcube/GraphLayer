@@ -195,7 +195,7 @@ func (session *Session) GetNodesBelowDepthAtTraversal(startNode uint64, return_f
 	if startNode < 0 {
 		return dataResults, errors.New("node id is invalid")
 	}
-	url += "/" + strconv.FormatInt(startNode, base)
+	url += "/" + strconv.FormatUint(startNode, 10)
 	url += "/" + "traverse" + "/" + "node"
 	data := map[string]interface{}{}
 	data["return_filter"] = return_filter
@@ -219,7 +219,7 @@ func (session *Session) GetNodesBelowDepthAtTraversal(startNode uint64, return_f
 func (session *Session) CreatedPagedTraversers(startNode uint64, prune_evaluator map[string]string, return_filter map[string]string, order string, relationships map[string]string) (dataResults map[int]*GraphDataTemplate, err error) {
 	session.Method = "post"
 	url := session.URL
-	url += "/" + node
+	url += "/" + "node"
 	url += "/" + strconv.FormatUint(startNode, 10)
 	url += "/" + paged + "/" + "traverse" + "/" + "node"
 	data := map[string]interface{}{}
@@ -239,7 +239,7 @@ func (session *Session) CreatedPagedTraversers(startNode uint64, prune_evaluator
 		return dataResults, errors.New("relationships is nil!")
 	}
 	data["relationships"] = relationships
-	buf, err := json.Marshal(data)
+	body, err := json.Marshal(data)
 	if err != nil {
 		return
 	}
