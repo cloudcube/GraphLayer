@@ -221,7 +221,7 @@ func (session *Session) CreatedPagedTraversers(startNode uint64, prune_evaluator
 	url := session.URL
 	url += "/" + "node"
 	url += "/" + strconv.FormatUint(startNode, 10)
-	url += "/" + paged + "/" + "traverse" + "/" + "node"
+	url += "/" + "paged" + "/" + "traverse" + "/" + "node"
 	data := map[string]interface{}{}
 	if prune_evaluator == nil {
 		return dataResults, errors.New("prune_evaluator is nil!")
@@ -239,7 +239,11 @@ func (session *Session) CreatedPagedTraversers(startNode uint64, prune_evaluator
 		return dataResults, errors.New("relationships is nil!")
 	}
 	data["relationships"] = relationships
-	body, err := json.Marshal(data)
+	buf, err := json.Marshal(data)
+	if err != nil {
+		return
+	}
+	body, err := session.Send(url, string(buf))
 	if err != nil {
 		return
 	}
