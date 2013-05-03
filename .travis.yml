@@ -6,3 +6,5 @@ notifications:
       david@cloudcube.net
     on_success: change
     on_failure: always
+before_script:
+   -go get github.com/remogatto/prettytest
