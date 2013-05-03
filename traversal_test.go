@@ -12,7 +12,7 @@ func TestTraversal(t *testing.T) {
 		t.Error(err)
 	}
 	log.Println("Parepare data ...")
-	nodeIdSlice := make([]uint64, 5)
+	nodeIdSlice := make([]uint64, 7)
 	data1 := map[string]interface{}{
 		"name": "root",
 	}
@@ -28,7 +28,7 @@ func TestTraversal(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	nodeIdSlice = append(nodeIdSlice, node2.ID)
+	nodeIdSlice[1] = node2.ID
 	data3 := map[string]interface{}{
 		"name": "Mattias",
 	}
@@ -36,7 +36,7 @@ func TestTraversal(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	nodeIdSlice = append(nodeIdSlice, node3.ID)
+	nodeIdSlice[2] = node3.ID
 	data4 := map[string]interface{}{
 		"name": "Emil",
 	}
@@ -44,7 +44,7 @@ func TestTraversal(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	nodeIdSlice = append(nodeIdSlice, node4.ID)
+	nodeIdSlice[3] = node4.ID
 	data5 := map[string]interface{}{
 		"name": "Peter",
 	}
@@ -52,7 +52,7 @@ func TestTraversal(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	nodeIdSlice = append(nodeIdSlice, node5.ID)
+	nodeIdSlice[4] = node5.ID
 	data6 := map[string]interface{}{
 		"name": "Tobias",
 	}
@@ -60,7 +60,7 @@ func TestTraversal(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	nodeIdSlice = append(nodeIdSlice, node6.ID)
+	nodeIdSlice[5] = node6.ID
 	data7 := map[string]interface{}{
 		"name": "Sara",
 	}
@@ -68,9 +68,9 @@ func TestTraversal(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	nodeIdSlice = append(nodeIdSlice, node7.ID)
+	nodeIdSlice[6] = node7.ID
 	log.Println("create relationship!")
-	relIdSlice := make([]uint64, 10)
+	relIdSlice := make([]uint64, 6)
 	relDesc := map[string]string{}
 	relType := "knows"
 	rel1, err := session.CreateRelationship(node1.ID, node2.ID, relDesc, relType)
@@ -82,28 +82,28 @@ func TestTraversal(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	relIdSlice = append(relIdSlice, rel2[0].ID)
+	relIdSlice[1] = rel2[0].ID
 	rel3, err := session.CreateRelationship(node2.ID, node4.ID, relDesc, relType)
 	if err != nil {
 		t.Error(err)
 	}
-	relIdSlice = append(relIdSlice, rel3[0].ID)
+	relIdSlice[2] = rel3[0].ID
 	rel4, err := session.CreateRelationship(node4.ID, node5.ID, relDesc, relType)
 	if err != nil {
 		t.Error(err)
 	}
-	relIdSlice = append(relIdSlice, rel4[0].ID)
+	relIdSlice[3] = rel4[0].ID
 	rel5, err := session.CreateRelationship(node4.ID, node6.ID, relDesc, relType)
 	if err != nil {
 		t.Error(err)
 	}
-	relIdSlice = append(relIdSlice, rel5[0].ID)
+	relIdSlice[4] = rel5[0].ID
 	relType = "loves"
 	rel6, err := session.CreateRelationship(node6.ID, node7.ID, relDesc, relType)
 	if err != nil {
 		t.Error(err)
 	}
-	relIdSlice = append(relIdSlice, rel6[0].ID)
+	relIdSlice[5] = rel6[0].ID
 	order := "breadth_first"
 	return_filter := map[string]string{
 		"body":     "position.endNode().getProperty('name').toLowerCase().contains('t')",

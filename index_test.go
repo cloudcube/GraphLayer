@@ -175,7 +175,7 @@ func TestAddNodeToIndex(t *testing.T) {
 	log.Println("AddNodeToIndex test finished.")
 }
 
-func TestCreateAutoIndexForNodes(t *testing.T) {
+/*func TestCreateAutoIndexForNodes(t *testing.T) {
 	session, err := Dial(settingFile)
 	if err != nil {
 		t.Error(err)
@@ -187,6 +187,9 @@ func TestCreateAutoIndexForNodes(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
+	status := true
+	category := "node"
+	session.EnableAutoindex(status, category)
 	indexName := "node_auto_index"
 	indexType := "fulltext"
 	indexProvider := "lucene"
@@ -212,6 +215,9 @@ func TestCreateAutoIndexForRelationships(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
+	status := true
+	category := "relationship"
+	session.EnableAutoindex(status, category)
 	indexName := "relationship_auto_index"
 	indexType := "exact"
 	indexProvider := "lucene"
@@ -226,4 +232,4 @@ func TestCreateAutoIndexForRelationships(t *testing.T) {
 	}
 	log.Println("dat cleared!")
 	log.Println("CreateAutoIndexForRelationships test finished!")
-}
+}*/
