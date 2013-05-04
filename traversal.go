@@ -210,9 +210,9 @@ func (session *Session) GetNodesBelowDepthAtTraversal(startNode uint64, return_f
 	}
 	dataResults, err = session.Unmarshal(body)
 	if err != nil {
-		return
+		return dataResults,err
 	}
-	return
+	return dataResults,err
 }
 
 // 创建一个分页的遍历
