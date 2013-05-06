@@ -299,3 +299,98 @@ func TestGetPathsFromTraversal(t *testing.T) {
 	}
 	log.Println("data cleanred!")
 }
+
+func TestGetNodesBelowDepthAtTraversal(t *testing.T) {
+	session, err := Dial(settingFile)
+	checkError(err, t)
+	log.Println("Prepare data...")
+	data := map[string]interface{}{}
+	data["name"] = "Root"
+	node1, err := session.CreateNode(data)
+	checkError(err, t)
+	data["name"] = "Johan"
+	node2, err := session.CreateNode(data)
+	checkError(err, t)
+	relDesc := map[string]string{}
+	relType := "knows"
+	rel1, err := session.CreateRelationship(node1.ID, node2.ID, relDesc, relType)
+	checkError(err, t)
+	data["name"] = "Mattias"
+	node3, err := session.CreateNode(data)
+	checkError(err, t)
+	rel2, err := session.CreateRelationship(node1.ID, node3.ID, relDesc, relType)
+	checkError(err, t)
+	data["name"] = "Emil"
+	node4, err := session.CreateNode(data)
+	checkError(err, t)
+	rel3, err := session.CreateRelationship(node2.ID, node4.ID, relDesc, relType)
+	checkError(err, t)
+	data["name"] = "Peter"
+	node5, err := session.CreateNode(data)
+	checkError(err, t)
+	rel4, err := session.CreateRelationship(node4.ID, node5.ID, relDesc, relType)
+	checkError(err, t)
+	data["name"] = "Tobias"
+	node6, err := session.CreateNode(data)
+	checkError(err, t)
+	rel5, err := session.CreateRelationship(node4.ID, node6.ID, relDesc, relType)
+	checkError(err, t)
+	data["name"] = "Sara"
+	relType = "loves"
+	node7, err := session.CreateNode(data)
+	checkError(err, t)
+	rel6, err := session.CreateRelationship(node6.ID, node7.ID, relDesc, relType)
+	checkError(err, t)
+	log.Println("data already!!!")
+	log.Println("Traversal returning nodes below a certain depth")
+	return_filter := map[string]string{
+		"body":     "position.length()<3;",
+		"language": "javascript",
+	}
+	prune_evaluator := map[string]string{
+		"name":     "none",
+		"language": "builtin",
+	}
+	dataResults, err := session.GetNodesBelowDepthAtTraversal(node1.ID, return_filter, prune_evaluator)
+	checkError(err, t)
+	log.Println(len(dataResults))
+	for key, dataResult := range dataResults {
+		log.Println(key)
+		log.Println(dataResult)
+	}
+	log.Println("Clean data...")
+	err = session.DeleteRelationship(rel1[0].ID)
+	checkError(err, t)
+	err = session.DeleteRelationship(rel2[0].ID)
+	checkError(err, t)
+	err = session.DeleteRelationship(rel3[0].ID)
+	checkError(err, t)
+	err = session.DeleteRelationship(rel4[0].ID)
+	checkError(err, t)
+	err = session.DeleteRelationship(rel5[0].ID)
+	checkError(err, t)
+	err = session.DeleteRelationship(rel6[0].ID)
+	checkError(err, t)
+	err = session.DeleteNode(node1.ID)
+	checkError(err, t)
+	err = session.DeleteNode(node2.ID)
+	checkError(err, t)
+	err = session.DeleteNode(node3.ID)
+	checkError(err, t)
+	err = session.DeleteNode(node4.ID)
+	checkError(err, t)
+	err = session.DeleteNode(node5.ID)
+	checkError(err, t)
+	err = session.DeleteNode(node6.ID)
+	checkError(err, t)
+	err = session.DeleteNode(node7.ID)
+	checkError(err, t)
+	log.Println("data cleaned!!!")
+	log.Println("test finished!!!")
+}
+
+func checkError(err error, t *testing.T) {
+	if err != nil {
+		t.Error(err)
+	}
+}
