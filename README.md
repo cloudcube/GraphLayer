@@ -26,6 +26,7 @@ See [GoDoc](http://godoc.org/github.com/innovationturbo/graphdb) for automatic
 
 ##Status
 [![Build Status](https://travis-ci.org/innovationturbo/graphdb.png)](https://travis-ci.org/innovationturbo/graphdb)
+[![Coverage Status](https://coveralls.io/repos/innovationturbo/graphdb/badge.png?branch=master)](https://coveralls.io/r/innovationturbo/graphdb)
 
 This driver is a work in progress.  It is not yet complete, but may now be
 suitable for use by others.  The code has an extensive set of integration
