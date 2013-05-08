@@ -61,7 +61,7 @@ risk.
 			"key":1,
 		}
 		node1,err:=session.CreateNode(data)
-		if err!=nil{
+		if err! = nil{
 			log.Println(err)
 		}
 		......
