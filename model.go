@@ -91,6 +91,7 @@ type CypherQueryTemplate struct {
 type Session struct {
 	Method     string // which http method
 	StatusCode int    // last http status code received
+	Location   string //will return a location when creat paged traverser
 	URL        string
 	Username   string
 	Password   string
