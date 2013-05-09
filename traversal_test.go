@@ -483,6 +483,10 @@ func TestCreatedPagedTraversers(t *testing.T) {
 	log.Println("test finished!!!")
 }
 
+func TestGetPagingResultPagedTraverser() {
+
+}
+
 func checkError(err error, t *testing.T) {
 	if err != nil {
 		t.Error(err)
