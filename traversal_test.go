@@ -483,7 +483,7 @@ func TestCreatedPagedTraversers(t *testing.T) {
 	log.Println("test finished!!!")
 }
 
-func TestGetPagingResultPagedTraverser() {
+func TestGetPagingResultPagedTraverser(t *testing.T) {
 
 }
 
