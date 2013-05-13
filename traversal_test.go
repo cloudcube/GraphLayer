@@ -392,45 +392,7 @@ func TestGetNodesBelowDepthAtTraversal(t *testing.T) {
 func TestCreatedPagedTraversers(t *testing.T) {
 	session, err := Dial(settingFile)
 	checkError(err, t)
-	log.Println("Prepare data...")
-	data := map[string]interface{}{}
-	data["name"] = "13"
-	node1, err := session.CreateNode(data)
-	checkError(err, t)
-	data["name"] = "19"
-	node2, err := session.CreateNode(data)
-	checkError(err, t)
-	relDesc := map[string]string{}
-	relType := "knows"
-	rel1, err := session.CreateRelationship(node1.ID, node2.ID, relDesc, relType)
-	checkError(err, t)
-	data["name"] = "17"
-	node3, err := session.CreateNode(data)
-	checkError(err, t)
-	rel2, err := session.CreateRelationship(node1.ID, node3.ID, relDesc, relType)
-	checkError(err, t)
-	data["name"] = "31"
-	node4, err := session.CreateNode(data)
-	checkError(err, t)
-	rel3, err := session.CreateRelationship(node2.ID, node4.ID, relDesc, relType)
-	checkError(err, t)
-	data["name"] = "21"
-	node5, err := session.CreateNode(data)
-	checkError(err, t)
-	rel4, err := session.CreateRelationship(node4.ID, node5.ID, relDesc, relType)
-	checkError(err, t)
-	data["name"] = "55"
-	node6, err := session.CreateNode(data)
-	checkError(err, t)
-	rel5, err := session.CreateRelationship(node4.ID, node6.ID, relDesc, relType)
-	checkError(err, t)
-	data["name"] = "99"
-	relType = "loves"
-	node7, err := session.CreateNode(data)
-	checkError(err, t)
-	rel6, err := session.CreateRelationship(node6.ID, node7.ID, relDesc, relType)
-	checkError(err, t)
-	log.Println("data already!!!")
+	nodeIds, relIds := session.createData(t)
 	log.Println("start testing CreatedPagedTraversers")
 	prune_evaluator := map[string]string{
 		"language": "builtin",
@@ -445,50 +407,108 @@ func TestCreatedPagedTraversers(t *testing.T) {
 		"type":      "NEXT",
 		"direction": "out",
 	}
-	dataResults, err := session.CreatedPagedTraversers(node1.ID, prune_evaluator, return_filter, order, relationships)
+	dataResults, err := session.CreatedPagedTraversers(nodeIds[0], prune_evaluator, return_filter, order, relationships)
 	checkError(err, t)
 	log.Println(len(dataResults))
 	for key, dataResult := range dataResults {
 		log.Println(key)
 		log.Println(dataResult)
 	}
+	log.Println(session.Location)
 	log.Println("Clean data...")
-	err = session.DeleteRelationship(rel1[0].ID)
-	checkError(err, t)
-	err = session.DeleteRelationship(rel2[0].ID)
-	checkError(err, t)
-	err = session.DeleteRelationship(rel3[0].ID)
-	checkError(err, t)
-	err = session.DeleteRelationship(rel4[0].ID)
-	checkError(err, t)
-	err = session.DeleteRelationship(rel5[0].ID)
-	checkError(err, t)
-	err = session.DeleteRelationship(rel6[0].ID)
-	checkError(err, t)
-	err = session.DeleteNode(node1.ID)
-	checkError(err, t)
-	err = session.DeleteNode(node2.ID)
-	checkError(err, t)
-	err = session.DeleteNode(node3.ID)
-	checkError(err, t)
-	err = session.DeleteNode(node4.ID)
-	checkError(err, t)
-	err = session.DeleteNode(node5.ID)
-	checkError(err, t)
-	err = session.DeleteNode(node6.ID)
-	checkError(err, t)
-	err = session.DeleteNode(node7.ID)
+	err = session.cleanData(nodeIds, relIds)
 	checkError(err, t)
 	log.Println("data cleaned!!!")
 	log.Println("test finished!!!")
 }
 
 func TestGetPagingResultPagedTraverser(t *testing.T) {
-
+	// session, err := Dial(settingFile)
+	// checkError(err, t)
+	// traversalUrl := ""
+	// dataResults, err := session.GetPagingResultPagedTraverser(traversalUri)
+	// checkError(err, t)
+	// log.Println(len(dataResults))
+	// for _, dataResult := range dataResults {
+	// 	log.Println(dataResult)
+	// }
 }
 
 func checkError(err error, t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
+}
+
+func (session *Session) createData(t *testing.T) ([]uint64, []uint64) {
+	log.Println("Prepare data...")
+	nodeIds := []uint64{}
+	relIds := []uint64{}
+	data := map[string]interface{}{}
+	data["name"] = "13"
+	node1, err := session.CreateNode(data)
+	checkError(err, t)
+	nodeIds = append(nodeIds, node1.ID)
+	data["name"] = "19"
+	node2, err := session.CreateNode(data)
+	checkError(err, t)
+	nodeIds = append(nodeIds, node2.ID)
+	relDesc := map[string]string{}
+	relType := "knows"
+	rel1, err := session.CreateRelationship(node1.ID, node2.ID, relDesc, relType)
+	checkError(err, t)
+	relIds = append(relIds, rel1[0].ID)
+	data["name"] = "17"
+	node3, err := session.CreateNode(data)
+	checkError(err, t)
+	nodeIds = append(nodeIds, node3.ID)
+	rel2, err := session.CreateRelationship(node1.ID, node3.ID, relDesc, relType)
+	checkError(err, t)
+	relIds = append(relIds, rel2[0].ID)
+	data["name"] = "31"
+	node4, err := session.CreateNode(data)
+	checkError(err, t)
+	nodeIds = append(nodeIds, node4.ID)
+	rel3, err := session.CreateRelationship(node2.ID, node4.ID, relDesc, relType)
+	checkError(err, t)
+	relIds = append(relIds, rel3[0].ID)
+	data["name"] = "21"
+	node5, err := session.CreateNode(data)
+	checkError(err, t)
+	nodeIds = append(nodeIds, node5.ID)
+	rel4, err := session.CreateRelationship(node4.ID, node5.ID, relDesc, relType)
+	checkError(err, t)
+	relIds = append(relIds, rel4[0].ID)
+	data["name"] = "55"
+	node6, err := session.CreateNode(data)
+	checkError(err, t)
+	nodeIds = append(nodeIds, node6.ID)
+	rel5, err := session.CreateRelationship(node4.ID, node6.ID, relDesc, relType)
+	checkError(err, t)
+	relIds = append(relIds, rel5[0].ID)
+	data["name"] = "99"
+	relType = "loves"
+	node7, err := session.CreateNode(data)
+	checkError(err, t)
+	nodeIds = append(nodeIds, node7.ID)
+	rel6, err := session.CreateRelationship(node6.ID, node7.ID, relDesc, relType)
+	checkError(err, t)
+	relIds = append(relIds, rel6[0].ID)
+	return nodeIds, relIds
+}
+
+func (session *Session) cleanData(nodeIds []uint64, relIds []uint64) (err error) {
+	for _, relId := range relIds {
+		err = session.DeleteRelationship(relId)
+		if err != nil {
+			return err
+		}
+	}
+	for _, nodeId := range nodeIds {
+		err = session.DeleteNode(nodeId)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }

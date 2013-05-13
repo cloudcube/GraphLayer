@@ -210,9 +210,9 @@ func (session *Session) GetNodesBelowDepthAtTraversal(startNode uint64, return_f
 	}
 	dataResults, err = session.Unmarshal(body)
 	if err != nil {
-		return dataResults,err
+		return dataResults, err
 	}
-	return dataResults,err
+	return dataResults, err
 }
 
 // 创建一个分页的遍历
@@ -243,7 +243,7 @@ func (session *Session) CreatedPagedTraversers(startNode uint64, prune_evaluator
 	if err != nil {
 		return
 	}
-	body, err := session.Send(url, string(buf))
+	body, err := session.SendForTraversal(url, string(buf))
 	if err != nil {
 		return
 	}
