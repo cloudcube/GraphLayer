@@ -48,6 +48,57 @@ func (session *Session) Send(url string, data string) (string, error) {
 		buf  bytes.Buffer   // contains http response body
 		err  error
 	)
+	resp, err = session.request(url, data)
+	if err != nil {
+		return "", err
+	}
+	defer func() {
+		if resp.Body != nil {
+			resp.Body.Close()
+		}
+	}()
+	_, err = buf.ReadFrom(resp.Body)
+	if err != nil {
+		return "", err
+	}
+	session.StatusCode = resp.StatusCode // the calling method should do more inspection with chkStatusCode() method and determine if the operation was successful or not.
+	return buf.String(), nil
+}
+
+func (session *Session) SendForTraversal(url string, data string) (string, error) {
+	var (
+		resp *http.Response // http response
+		buf  bytes.Buffer   // contains http response body
+		err  error
+	)
+	resp, err = session.request(url, data)
+	if err != nil {
+		return "", err
+	}
+	defer func() {
+		if resp.Body != nil {
+			resp.Body.Close()
+		}
+	}()
+	_, err = buf.ReadFrom(resp.Body)
+	if err != nil {
+		return "", err
+	}
+	session.StatusCode = resp.StatusCode
+	location, err := resp.Location()
+	if err != nil {
+		return "", err
+	}
+	session.Location = location.String()
+	return buf.String(), nil
+}
+
+func (session *Session) request(url string, data string) (*http.Response, error) {
+	var (
+		resp *http.Response // http response
+		// buf  bytes.Buffer   // contains http response body
+		err error
+	)
 	if len(url) < 1 {
 		url = session.URL + "node" // default path
 	}
@@ -97,19 +148,9 @@ func (session *Session) Send(url string, data string) (string, error) {
 
 	}
 	if err != nil {
-		return "", err
+		return nil, err
 	}
-	defer func() {
-		if resp.Body != nil {
-			resp.Body.Close()
-		}
-	}()
-	_, err = buf.ReadFrom(resp.Body)
-	if err != nil {
-		return "", err
-	}
-	session.StatusCode = resp.StatusCode // the calling method should do more inspection with chkStatusCode() method and determine if the operation was successful or not.
-	return buf.String(), nil
+	return resp, nil
 }
 
 // sets Basic HTTP Auth
