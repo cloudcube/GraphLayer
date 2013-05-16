@@ -103,7 +103,7 @@ func (session *Session) TraversalByFilter(startNode uint64, order string, return
 	return dataResults, session.NewError(errorList)
 }
 
-// 	// 从一个遍历返回关系
+//从一个遍历返回关系
 func (session *Session) GetRelationshipsFromTraversal(startNode uint64, order string, uniqueness string, return_filter map[string]string) (dataResults map[int]*GraphDataTemplate, err error) {
 	session.Method = "post"
 	url := session.URL

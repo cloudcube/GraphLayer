@@ -2,7 +2,11 @@ package graphdb
 
 import (
 	"log"
+	"math/rand"
 	"testing"
+	"time"
+	// "strings"
+	"strconv"
 )
 
 func TestTraversal(t *testing.T) {
@@ -423,15 +427,58 @@ func TestCreatedPagedTraversers(t *testing.T) {
 }
 
 func TestGetPagingResultPagedTraverser(t *testing.T) {
-	// session, err := Dial(settingFile)
-	// checkError(err, t)
-	// traversalUrl := ""
-	// dataResults, err := session.GetPagingResultPagedTraverser(traversalUri)
-	// checkError(err, t)
-	// log.Println(len(dataResults))
-	// for _, dataResult := range dataResults {
-	// 	log.Println(dataResult)
+	session, err := Dial(settingFile)
+	checkError(err, t)
+	log.Println("create nodeIds")
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+	nodeIds := []uint64{}
+	var nodeNames [100]int64
+	for i := 0; i < 100; i++ {
+		nodeNames[i] = r.Int63n(1000)
+	}
+	for _, nodeName := range nodeNames {
+		data := map[string]interface{}{}
+		data["name"] = strconv.FormatInt(nodeName, 10)
+		node, err := session.CreateNode(data)
+		if err != nil {
+			t.Error(err)
+		}
+		nodeIds = append(nodeIds, node.ID)
+	}
+	log.Println("nodeIds created")
+	log.Println("start testing CreatedPagedTraversers")
+	prune_evaluator := map[string]string{
+		"language": "builtin",
+		"name":     "none",
+	}
+	return_filter := map[string]string{
+		"language": "javascript",
+		"body":     "position.endNode().getProperty('name').contains('1');",
+	}
+	order := "depth_first"
+	relationships := map[string]string{
+		"type":      "NEXT",
+		"direction": "out",
+	}
+	log.Println(nodeIds[0])
+	_, err = session.CreatedPagedTraversers(nodeIds[0], prune_evaluator, return_filter, order, relationships)
+	if err != nil {
+		t.Error(err)
+	}
+	log.Println(session.Location)
+	// log.Println("starting test GetPagingResultPagedTraverser")
+	// dataSets, err := session.GetPagingResultPagedTraverser(session.Location)
+	// if err != nil {
+	// 	t.Error(err)
 	// }
+	// for _, dataSet := range dataSets {
+	// 	log.Println(dataSet)
+	// }
+	// log.Println("clean data...")
+	// err = session.cleanData(nodeIds, relIds)
+	// checkError(err, t)
+	// log.Println("data cleaned")
+	// log.Println("test finished!")
 }
 
 func checkError(err error, t *testing.T) {
