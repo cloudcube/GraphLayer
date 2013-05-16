@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"strings"
 )
@@ -15,6 +16,12 @@ type databaseConfig struct {
 	password string
 }
 
+//Dial with config's file
+//settingFile -it's config file,you can give absolute path or relative path
+
+//return
+//    -*Session return session pointer
+//    -error return nil if create sucessful,otherwise error
 func Dial(settingFile string) (*Session, error) {
 	var (
 		dbSetting databaseConfig
@@ -39,6 +46,32 @@ func Dial(settingFile string) (*Session, error) {
 	}
 	session.Password = dbSetting.password
 	_, err = session.Send(dbSetting.url, "")
+	return session, err
+}
+
+//Dial with parameters
+//url -graphdb url
+//userName -connect graphdb userName
+//password -connect graphdb need password
+
+//return
+//    -*Session return session pointer
+//    -error return nil if create sucessful,otherwise error
+func DialWithParam(url, userName, password string) (*Session, error) {
+	session = new(Session)
+	if len(url) < 1 {
+		url = "http://127.0.0.1:7474/db/data"
+	}
+	session.URL = url
+	if len(userName) < 0 {
+		return nil, errors.New("userName is nil!")
+	}
+	session.Username = userName
+	if len(password) < 0 {
+		return nil, errors.New("password is nil!")
+	}
+	session.Password = password
+	_, err = session.Send(url, "")
 	return session, err
 }
 
@@ -75,6 +108,7 @@ func (session *Session) SendForTraversal(url string, data string) (string, error
 	if err != nil {
 		return "", err
 	}
+	log.Println(resp)
 	defer func() {
 		if resp.Body != nil {
 			resp.Body.Close()
