@@ -7,4 +7,6 @@ notifications:
     on_success: change
     on_failure: always
 before_script:
+   - go get -v github.com/howeyc/fsnotify
+   - go get -v github.com/remogatto/application
    - go get -v github.com/remogatto/prettytest
