@@ -58,7 +58,7 @@ func Dial(settingFile string) (*Session, error) {
 //    -*Session return session pointer
 //    -error return nil if create sucessful,otherwise error
 func DialWithParam(url, userName, password string) (*Session, error) {
-	session = new(Session)
+	session := new(Session)
 	if len(url) < 1 {
 		url = "http://127.0.0.1:7474/db/data"
 	}
@@ -71,7 +71,7 @@ func DialWithParam(url, userName, password string) (*Session, error) {
 		return nil, errors.New("password is nil!")
 	}
 	session.Password = password
-	_, err = session.Send(url, "")
+	_, err := session.Send(url, "")
 	return session, err
 }
 
