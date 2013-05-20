@@ -2,9 +2,9 @@ package graphdb
 
 import (
 	"log"
-	"math/rand"
+	// "math/rand"
 	"testing"
-	"time"
+	// "time"
 	// "strings"
 	"strconv"
 )
@@ -430,11 +430,14 @@ func TestGetPagingResultPagedTraverser(t *testing.T) {
 	session, err := Dial(settingFile)
 	checkError(err, t)
 	log.Println("create nodeIds")
-	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+	// r := rand.New(rand.NewSource(time.Now().UnixNano()))
 	nodeIds := []uint64{}
-	var nodeNames [100]int64
-	for i := 0; i < 100; i++ {
-		nodeNames[i] = r.Int63n(1000)
+	var index int64 = 1
+	var nodeNames [31]int64
+	for i := 0; i < 31; i++ {
+		// nodeNames[i] = r.Int63n(1000)
+		nodeNames[i] = index
+		index++
 	}
 	for _, nodeName := range nodeNames {
 		data := map[string]interface{}{}
