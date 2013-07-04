@@ -36,7 +36,8 @@ risk.
 
 ##Install
 
-	go get git.oschina.net/cloudcube/graphlayer
+	//go get git.oschina.net/cloudcube/graphlayer //oschina.net
+	go get github.com/innovationturbo/graphdb //github.com
 
 
 
