@@ -22,7 +22,7 @@ GraphLayer is a Graph database adapter!
 * Gremlin
 
 ##Documentation
-See [GoDoc](http://godoc.org/github.com/innovationturbo/graphdb) for automatic
+See [GoDoc](http://godoc.org/github.com/innovationturbo/GraphLayer) for automatic
 
 ##Status
 [![Build Status](https://travis-ci.org/innovationturbo/graphdb.png)](https://travis-ci.org/innovationturbo/graphdb)
@@ -37,7 +37,7 @@ risk.
 ##Install
 
 	//go get git.oschina.net/cloudcube/graphlayer //oschina.net
-	go get github.com/innovationturbo/graphdb //github.com
+	go get github.com/innovationturbo/GraphLayer //github.com
 
 
 
@@ -47,8 +47,8 @@ risk.
 
 	import (
 		"log"
-		//"github.com/innovationturbo/graphdb"  //github.com
-		git.oschina.net/cloudcube/graphlayer //oschina.net
+		_ "github.com/innovationturbo/GraphLayer"  //github.com
+		//git.oschina.net/cloudcube/graphlayer //oschina.net
 	)
 
 	func main(){
