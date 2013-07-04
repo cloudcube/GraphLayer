@@ -1,8 +1,8 @@
-[graphdb](http://github.com/innovationturbo/graphdb)
+[GraphLayer](https://git.oschina.net/cloudcube/graphlayer)
 =======
 
 
-graphdb is a graph database,it can manipulate and analyze graph data! 
+GraphLayer is a Graph database adapter! 
 
 ##Completed:
 * Node(create/edit/relate/delete/properties)
@@ -37,7 +37,7 @@ risk.
 
 ##Install
 
-	go get github.com/innovationturbo/graphdb
+	go get git.oschina.net/cloudcube/graphlayer
 
 
 
@@ -47,7 +47,8 @@ risk.
 
 	import (
 		"log"
-		"github.com/innovationturbo/graphdb"   
+		//"github.com/innovationturbo/graphdb"  //github.com
+		git.oschina.net/cloudcube/graphlayer //oschina.net
 	)
 
 	func main(){
