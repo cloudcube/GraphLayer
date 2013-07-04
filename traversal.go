@@ -103,7 +103,7 @@ func (session *Session) TraversalByFilter(startNode uint64, order string, return
 	return dataResults, session.NewError(errorList)
 }
 
-// 	// 从一个遍历返回关系
+//从一个遍历返回关系
 func (session *Session) GetRelationshipsFromTraversal(startNode uint64, order string, uniqueness string, return_filter map[string]string) (dataResults map[int]*GraphDataTemplate, err error) {
 	session.Method = "post"
 	url := session.URL
@@ -210,9 +210,9 @@ func (session *Session) GetNodesBelowDepthAtTraversal(startNode uint64, return_f
 	}
 	dataResults, err = session.Unmarshal(body)
 	if err != nil {
-		return dataResults,err
+		return dataResults, err
 	}
-	return dataResults,err
+	return dataResults, err
 }
 
 // 创建一个分页的遍历
@@ -243,7 +243,7 @@ func (session *Session) CreatedPagedTraversers(startNode uint64, prune_evaluator
 	if err != nil {
 		return
 	}
-	body, err := session.Send(url, string(buf))
+	body, err := session.SendForTraversal(url, string(buf))
 	if err != nil {
 		return
 	}
