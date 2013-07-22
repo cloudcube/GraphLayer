@@ -1,4 +1,4 @@
-package graphdb
+package GraphLayer
 
 import (
 	"encoding/json"
@@ -84,10 +84,10 @@ func (session *Session) GetRelationshipById(relId uint64) (dataSet map[int]*Grap
 	errorList := map[int]error{
 		404: errors.New("Relatoinship not found."),
 	}
-	return dataSet,session.NewError(errorList) 
+	return dataSet, session.NewError(errorList)
 }
 
-//获得关系类型 
+//获得关系类型
 func (session *Session) GetRelationshipTypes() ([]string, error) {
 	var types []string
 	session.Method = "get"

@@ -1,4 +1,4 @@
-package graphdb
+package GraphLayer
 
 import (
 	"encoding/json"
@@ -23,7 +23,7 @@ func (session *Session) Unmarshal(s string) (dataSet map[int]*GraphDataTemplate,
 			return nil, err
 		}
 		for _, v := range templateSet {
-			data, err := session.unmarshalNode(v) // append NeoTemplate into the data set                             
+			data, err := session.unmarshalNode(v) // append NeoTemplate into the data set
 			if err != nil {
 				return nil, err
 			}

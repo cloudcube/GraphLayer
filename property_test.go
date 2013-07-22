@@ -1,4 +1,4 @@
-package graphdb
+package GraphLayer
 
 import (
 	autoTest "github.com/remogatto/prettytest"

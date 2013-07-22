@@ -47,7 +47,7 @@ components.neo4j.org/neo4j/1.8.2/apidocs/org/neo4j/graphdb/Path.html> object rep
 from the start node to the current traversal position.
 */
 
-package graphdb
+package GraphLayer
 
 import (
 	"encoding/json"

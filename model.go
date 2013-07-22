@@ -1,4 +1,4 @@
-package graphdb
+package GraphLayer
 
 type ServiceRootTemplate struct {
 	Extensions         map[string]interface{}
