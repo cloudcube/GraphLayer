@@ -37,7 +37,7 @@ risk.
 ##Install
 
 	//go get git.oschina.net/cloudcube/graphlayer //oschina.net
-	go get github.com/innovationturbo/GraphLayer //github.com
+	go get github.com/cloudcube/GraphLayer //github.com
 
 
 
@@ -47,7 +47,7 @@ risk.
 
 	import (
 		"log"
-		_ "github.com/innovationturbo/GraphLayer"  //github.com
+		_ "github.com/cloudcube/GraphLayer"  //github.com
 		//git.oschina.net/cloudcube/graphlayer //oschina.net
 	)
 
