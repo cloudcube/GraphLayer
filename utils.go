@@ -125,12 +125,3 @@ func (session *Session) unmarshalNode(template map[string]interface{}) (*GraphDa
 	}
 	return node, nil
 }
-
-func (err *Error) CheckError() error {
-	if err.List != nil {
-		if err.List[err.Code] != nil {
-			return err.List[err.Code]
-		}
-	}
-	return nil
-}
