@@ -13,7 +13,7 @@ GraphLayer is a Graph database adapter!
   /return relationship from a traversal
   /return path from a traversal
   /traversal returning nodes below a certain depath
-  /creatomg a paged traverser)-still under active development,
+  /creatomg a paged traverser)
 
 
 ##To Do:
@@ -22,10 +22,10 @@ GraphLayer is a Graph database adapter!
 * Gremlin
 
 ##Documentation
-See [GoDoc](http://godoc.org/github.com/innovationturbo/GraphLayer) for automatic
+See [GoDoc](http://godoc.org/github.com/haibinpark/goneo4j) for automatic
 
 ##Status
-[![Build Status](https://travis-ci.org/innovationturbo/graphdb.png)](https://travis-ci.org/innovationturbo/graphdb)
+[![Build Status](https://travis-ci.org/haibinpark/goneo4j.png)](https://travis-ci.org/haibinpark/goneo4j)
 
 This driver is a work in progress.  It is not yet complete, but may now be
 suitable for use by others.  The code has an extensive set of integration
@@ -35,9 +35,7 @@ risk.
 
 
 ##Install
-
-	//go get git.oschina.net/cloudcube/graphlayer //oschina.net
-	go get github.com/cloudcube/GraphLayer //github.com
+	go get github.com/haibinpark/goneo4j //github.com
 
 
 
@@ -47,8 +45,7 @@ risk.
 
 	import (
 		"log"
-		_ "github.com/cloudcube/GraphLayer"  //github.com
-		//git.oschina.net/cloudcube/graphlayer //oschina.net
+		"github.com/haibinpark/goneo4j"  //github.com
 	)
 
 	func main(){
