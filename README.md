@@ -1,8 +1,8 @@
-[GraphLayer](https://git.oschina.net/cloudcube/graphlayer)
+[goneo4j](https://github.com/haibinpark/goneo4j)
 =======
 
 
-GraphLayer is a Graph database adapter! 
+goneo4j is another neo4j graph database for Google Go! 
 
 ##Completed:
 * Node(create/edit/relate/delete/properties)
