@@ -46,8 +46,7 @@ The position object in the body of the return_filter and prune_evaluator is a Pa
 components.neo4j.org/neo4j/1.8.2/apidocs/org/neo4j/graphdb/Path.html> object representing the path
 from the start node to the current traversal position.
 */
-
-package GraphLayer
+package goneo4j
 
 import (
 	"encoding/json"

@@ -1,4 +1,4 @@
-package GraphLayer
+package goneo4j
 
 import (
 	"encoding/json"
