@@ -1,4 +1,4 @@
-package GraphLayer
+package goneo4j
 
 type ServiceRootTemplate struct {
 	Extensions         map[string]interface{}
