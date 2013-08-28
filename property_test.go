@@ -1,19 +1,9 @@
 package goneo4j
 
 import (
-	autoTest "github.com/remogatto/prettytest"
 	"log"
 	"testing"
 )
-
-//test setup start
-type testSuite struct {
-	autoTest.Suite
-}
-
-func TestRunner(t *testing.T) {
-	autoTest.Run(t, new(testSuite))
-}
 
 //test set property on a node
 func TestSetPropertyOnNode(t *testing.T) {
