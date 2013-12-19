@@ -1,3 +1,3 @@
 #!/bin/zsh
-export GOPATH=~/respo
+export GOPATH=~/repos
 export PATH=${GOPATH://bin//}/bin:$PATH
